@@ -1,23 +1,15 @@
 import express, {Router, Request, Response, NextFunction} from 'express';
+import userController from '../controllers/userController';
  const router: Router = express.Router();
 
-router.post('/registration')
-router.post('/login')
-router.get('/auth')
+router.post('/registration', userController.registration)
+router.post('/login', userController.login)
+router.get('/auth', userController.check)
 
-router.get('/', (async (req:Request, res:Response, next:NextFunction) => {
-    try {
-    //   const users = await usersRepo.getAll();
-    //   if (!users) throw new Error("NOO users")
-      res.status(202).json('GOOOOD');
-      // 
-    } catch(err) {
-      next(err)
-    }
-  }))
+router.get('/', userController.getAll)
 
-router.get('/:id')
-router.put('/:id')
-router.delete('/:id')
+router.get('/:id', userController.getOne)
+router.put('/:id', userController.update)
+router.delete('/:id', userController.delete)
 
 export default router;
