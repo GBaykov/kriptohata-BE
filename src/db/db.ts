@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
-export default new Sequelize(
-    process.env.DB_NAME || 'movie-library',
+const sequelize = new Sequelize(
+    process.env.DB_NAME || 'kriptohata',
     process.env.DB_USER|| 'postgres',
     process.env.FB_PASSWORD || 'root',
     {
@@ -10,3 +10,4 @@ export default new Sequelize(
         port: Number(process.env.DB_PORT)
     }
 )
+export default sequelize;

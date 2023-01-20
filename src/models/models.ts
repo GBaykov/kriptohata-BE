@@ -1,32 +1,32 @@
+
 import sequelize from '../db/db';
-import { DataType, DataTypes } from 'sequelize';
-import {v4 as uuid} from 'uuid';
+import {  DataTypes } from 'sequelize';
 
 export const User = sequelize.define('user', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+    id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
     email:{type:DataTypes.STRING, unique:true},
     password: {type:DataTypes.STRING},
     role:{type:DataTypes.STRING, defaultValue:'User'}
 })
 
 export const Basket = sequelize.define('basket', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
 })
 
 export const BascetDevice = sequelize.define('bascet_device', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
 })
 
 export const Chosen = sequelize.define('chosen', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
 })
 
 export const ChosenDevice = sequelize.define('chosen_device', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
 })
 
 export const Device = sequelize.define('device', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
     name:{type:DataTypes.STRING, unique:true, allowNull:false},
     price: {type:DataTypes.INTEGER, allowNull:false},
     img:{type:DataTypes.STRING},
@@ -34,21 +34,22 @@ export const Device = sequelize.define('device', {
 })
 
 export const DeviceInfo = sequelize.define('divice_info', {
-    id:{type:DataTypes.UUIDV4, primaryKey:true},
+  id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
     title:{type:DataTypes.STRING, allowNull:false},
     description:{type:DataTypes.STRING, allowNull:false}
 })
 
 export const Type = sequelize.define('type', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
     name:{type:DataTypes.STRING, unique:true, allowNull:false},
 })
 
 export const Rating = sequelize.define('rating', {
-    id: {type:DataTypes.UUIDV4, primaryKey:true},
+   id: {type:DataTypes.UUIDV4, primaryKey:true, autoIncrement:true},
     rate:{type:DataTypes.INTEGER, unique:true, allowNull:false},
     comment:{type:DataTypes.STRING, unique:true, allowNull:false},
 })
+// export default {User, Type, Basket, BascetDevice, Chosen, ChosenDevice, Device, DeviceInfo, Rating}
 
 
 User.hasOne(Basket)
