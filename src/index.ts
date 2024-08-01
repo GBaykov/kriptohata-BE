@@ -8,6 +8,7 @@ import fileUpload from "express-fileupload";
 import router from "./routes";
 import errorHendler from "./middleware/ErrorHandlingMiddlewarw";
 import path from "path";
+import { handleErrors } from "./static/utils";
 
 //  import models from './models/models';
 
@@ -21,9 +22,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "static")));
 app.use(fileUpload({}));
-app.use("/api", router);
+app.use("/", router);
 
-app.use(errorHendler);
+app.use(handleErrors);
+
+process.on("uncaughtException", (err) => {
+  setTimeout(() => process.exit(1), 1000);
+});
 
 // app.get('/', (req:Request, res: Response) =>{
 //     res.status(200).json({message:'WORKING'})
@@ -32,9 +37,6 @@ app.use(errorHendler);
 
 const start = async () => {
   try {
-    await sequelize.authenticate();
-    await sequelize.sync();
-
     app.listen(PORT, () => {
       console.log(`server start on PORT ${PORT}`);
     });

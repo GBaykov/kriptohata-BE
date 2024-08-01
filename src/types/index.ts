@@ -1,61 +1,46 @@
-// export type RequestDevice = {
-//   name: string;
-//   price: number;
-//   exists: boolean;
-//   typeId: string;
-//   info: string;
-//   // img: string;
-// };
-
-// export interface IDeviceInfo {
-//   id: string;
-//   title: string;
-//   description: string;
-//   deviceId: string;
-// }
-
 export type Videocard = {
-  type:DeviceType.Videocard;
+  type: DeviceType.Videocard;
   name: string;
   price: number;
-  exists: boolean;
-  article_nember: string;
-  description:string;
+  exists: ExistType;
+  article_number: string;
   img: string;
-  currency: [
-    {
-    name:string;
-    short_name:string
-  }
-];
-  memory: [string];
+  currency: {
+    name: string;
+    short_name: string;
+  }[];
+  memory: string[];
   manufacturer: string;
-}
+};
 
-export type Miner={
-  type:DeviceType.OldMiner | DeviceType.NewMiner;
+export type Miner = {
+  type: DeviceType.OldMiner | DeviceType.NewMiner;
   name: string;
   price: number;
-  exists: boolean;
-  article_nember: string;
-  description:string;
+  exists: ExistType;
+  article_number: string;
   img: string;
-  currency: [
-    {
-    name:string;
-    short_name:string
-  }
-];
-  hash_power:string;
-  hash_algorithm:string
-}
+  currency: {
+    name: string;
+    short_name: string;
+  }[];
+  energy_consumption: number;
+  hash_power: number;
+  hash_algorithm: string;
+};
 export enum DeviceType {
   Videocard = "Videocard",
   OldMiner = "OldMiner",
   NewMiner = "NewMiner",
-  }
-  
-  export type  Device = Videocard | Miner
+}
+export enum ExistType {
+  exist = "exist",
+  onOrder = "onOrder",
+  notExist = "notExist",
+}
+
+export type Device = Videocard | Miner;
+export type UserRole = "Admin" | "Customer";
 
 export type User = {
   id: string;
@@ -64,34 +49,25 @@ export type User = {
   password: string;
   tel: string;
   role: string;
-  orders: [
-    order_id:string
-  ];
-  favourites_id: string
-}
+  favourites: [Device] | [];
+};
 
-
-
-
-
-
-
-export type CallBack = { id: string, name: string, tel: string }
+export type CallBack = { id: string; name: string; tel: string };
 
 export type Order = {
-  id: string,
-  user_id?:string;
-    date: string,
-    user_name:string;
-    user_tel:string;
-    items: [  Device],
-}
+  id: string;
+  user_id?: string;
+  date: string;
+  isRegistered: boolean;
+  user_name: string;
+  user_tel: string;
+  items: [Device];
+};
 
-
-
-export type Favourites = [
-  {
-      user_id: string,
-      items: [Device],
-  }
-] 
+// export type Favourites = [
+//   {
+//     id: string;
+//     user_id: string;
+//     items: [Device];
+//   }
+// ];
