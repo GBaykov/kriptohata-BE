@@ -5,8 +5,8 @@ import typeRouter from "./typeRouter";
 
 const router: Router = Router();
 
-// router.use('/user', userRouter)
-router.use("/device", deviceRouter);
+router.use("/user", userRouter);
+//router.use("/device", deviceRouter);
 // router.use('/type',typeRouter)
 
 export default router;

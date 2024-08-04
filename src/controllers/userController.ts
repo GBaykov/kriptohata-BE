@@ -8,7 +8,7 @@ import { v4 as uuid } from "uuid";
 class UserController {
   static toResponse(user: User) {
     const { password, ...data } = user;
-    return { data };
+    return { ...data };
   }
 
   async registration(req: Request, res: Response, next: NextFunction) {
@@ -52,8 +52,8 @@ class UserController {
     try {
       const users = await DB.users;
       if (!users) throw new Error("NOO users");
-      res.json(users.map(UserController.toResponse));
-      res.status(200).json(users);
+      // res.json(users.map(UserController.toResponse));
+      res.status(200).json(users.map(UserController.toResponse));
       //
     } catch (err) {
       next(err);
@@ -72,14 +72,25 @@ class UserController {
   }
 
   async update(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    const index = await DB.users.findIndex((user, index) => user.id === id);
-    if (!index || !id) throw new Error("NOO users or id");
-    const user: User = req.body;
-    user.id = id;
-    await DB.users.splice(index, 1, user);
-    res.status(201).json(DB.users);
     try {
+      const { id } = req.params;
+      const data = req.body;
+      const user = await DB.users.find((item) => item.id === id);
+      const index = await DB.users.findIndex((user) => user.id === id);
+      if (!user || !index || index === -1) {
+        throw new RequestError(
+          "Error in updateUser: no user with such id",
+          404
+        );
+      }
+      const new_user = { ...user, ...data };
+      new_user.id = id;
+      await DB.users.splice(index, 1, new_user);
+      res.status(201).json(UserController.toResponse(new_user));
+
+      // if (user && new_user && index !== -1) {
+
+      // } else throw new RequestError("Error: error while updeting user", 404);
     } catch (err) {
       next(err);
     }
@@ -89,7 +100,7 @@ class UserController {
     try {
       const { id } = req.params;
       const index = await DB.users.findIndex((user, index) => user.id === id);
-      if (!index || !id) throw new Error("NOO users or id");
+      if (index === -1) throw new RequestError("NOO users or id", 404);
       await DB.users.splice(index, 1);
       res.status(200).json("Success while delete user");
     } catch (err) {

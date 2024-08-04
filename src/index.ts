@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "static")));
 app.use(fileUpload({}));
-app.use("/", router);
+app.use("/api", router);
 
 app.use(handleErrors);
 
@@ -30,10 +30,9 @@ process.on("uncaughtException", (err) => {
   setTimeout(() => process.exit(1), 1000);
 });
 
-// app.get('/', (req:Request, res: Response) =>{
-//     res.status(200).json({message:'WORKING'})
-
-// })
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({ message: "WORKING" });
+});
 
 const start = async () => {
   try {
