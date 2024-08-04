@@ -1,4 +1,5 @@
 export type Videocard = {
+  id: string;
   type: DeviceType.Videocard;
   name: string;
   price: number;
@@ -14,6 +15,7 @@ export type Videocard = {
 };
 
 export type Miner = {
+  id: string;
   type: DeviceType.OldMiner | DeviceType.NewMiner;
   name: string;
   price: number;
@@ -49,7 +51,7 @@ export type User = {
   password: string;
   tel: string;
   role: string;
-  favourites: [Device] | [];
+  favourites_id: string | null;
 };
 
 export type CallBack = { id: string; name: string; tel: string };
@@ -58,16 +60,14 @@ export type Order = {
   id: string;
   user_id?: string;
   date: string;
-  isRegistered: boolean;
+  isAuthorized: boolean;
   user_name: string;
   user_tel: string;
   items: [Device];
 };
 
-// export type Favourites = [
-//   {
-//     id: string;
-//     user_id: string;
-//     items: [Device];
-//   }
-// ];
+export type Favorite = {
+  id: string;
+  user_id: string;
+  items: Device[];
+};

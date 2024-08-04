@@ -3,6 +3,7 @@ import {
   Device,
   DeviceType,
   ExistType,
+  Favorite,
   Miner,
   Order,
   User,
@@ -10,6 +11,7 @@ import {
 } from "../types";
 
 export const videocard: Videocard = {
+  id: "device_id",
   type: DeviceType.Videocard,
   name: "ASUS TUF Gaming GeForce RTX 3090",
   price: 560,
@@ -31,6 +33,7 @@ export const videocard: Videocard = {
 };
 
 const old_miner: Miner = {
+  id: "device_id",
   type: DeviceType.OldMiner,
   name: "ASIC Antminer S19 95T",
   price: 3100,
@@ -62,6 +65,7 @@ const old_miner: Miner = {
 };
 
 const new_miner: Device = {
+  id: "device_id",
   type: DeviceType.NewMiner,
   name: "ASIC Antminer S19 95T",
   price: 3500,
@@ -100,7 +104,7 @@ const users: User[] = [
     password: "Admin",
     tel: "+375 29 195-75-44",
     role: "Admin",
-    favourites: [new_miner],
+    favourites_id: "admin_favorite_id",
   },
 ];
 
@@ -113,20 +117,27 @@ const orders: Order[] = [
     id: "string",
     user_id: "Admin",
     date: "01-08-2024",
-    isRegistered: true,
+    isAuthorized: true,
     user_name: "Admin",
     user_tel: "+375 29 195-75-44",
     items: [old_miner],
   },
 ];
+const admin_fav: Favorite = {
+  id: "admin_favorite_id",
+  user_id: "Admin",
+  items: [],
+};
+const favorites: Favorite[] = [admin_fav];
 
 //
 
 type DBType = {
   devices: Device[];
   users: User[];
-  orders: Order[] | null;
-  callbacks: CallBack[] | null;
+  orders: Order[];
+  callbacks: CallBack[];
+  favorites: Favorite[];
 };
 
 const DB: DBType = {
@@ -134,5 +145,6 @@ const DB: DBType = {
   orders,
   users,
   callbacks,
+  favorites,
 };
 export default DB;

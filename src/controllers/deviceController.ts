@@ -3,70 +3,93 @@ import { v4 as uuid } from "uuid";
 import fileUpload from "express-fileupload";
 import path from "path";
 import ApiError from "../error/ApiError";
-
-export interface MulterFile {
-  key: string; // Available using `S3`.
-  path: string; // Available using `DiskStorage`.
-  mimetype: string;
-  originalname: string;
-  size: number;
-  img: any;
-}
+import { Device } from "../types";
+import { RequestError } from "../static/utils";
+import DB from "../db/db";
 
 class DeviceController {
-  // async create(
-  //   req: Request & { files: any },
-  //   res: Response,
-  //   next: NextFunction
-  // ) {
-  //   try {
-  //     const data: RequestDevice = req.body;
-  //     let { name, price, exists, info, typeId } = data;
-  //     const { img } = req.files;
-  //     const fileName = uuid() + ".jpg";
-  //     img.mv(path.resolve(__dirname, "..", "static", fileName));
-  //     const device = await Device.create({
-  //       id: 5,
-  //       name,
-  //       price,
-  //       exists,
-  //       typeId,
-  //       img: fileName,
-  //     });
+  async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      // const {article_number, currency, exists,img,name,price,type }= req.body;
 
-  //     if (info) {
-  //       const information: Array<IDeviceInfo> = JSON.parse(info);
-  //       information.forEach((i) => {
-  //         DeviceInfo.create({
-  //           title: i.title,
-  //           description: i.description,
-  //           deviceId: device.id,
-  //         });
-  //       });
-  //     }
+      const device: Device = req.body;
+      // const device: Device = {article_number, currency, exists,img,name,price,type, id: uuid() };
+      device.id = uuid();
 
-  //     return res.json(device);
-  //   } catch (e) {
-  //     const error = e as Error;
-  //     next(ApiError.badRequest(error.message));
-  //   }
-  // }
+      if (
+        !device ||
+        !device.article_number ||
+        !device.currency ||
+        !device.name ||
+        !device.type ||
+        !device.price
+      )
+        throw new RequestError("Error: can not create device", 404);
+      await DB.devices.push(device);
+      res.status(201).json(device);
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  // async getAll(req: Request, res: Response) {
-  //   const { typeId } = req.query;
-  //   let devices;
-  //   if (!typeId) {
-  //     devices = Device.findAll();
-  //   }
-  //   devices = Device.findAll({ where: { typeId } });
-  //   return res.json(devices);
-  // }
+  async getAll(req: Request, res: Response, next: NextFunction) {
+    try {
+      const devices = await DB.devices;
+      if (!devices) throw new Error("NOO devices");
 
-  async getOne(req: Request, res: Response) {}
+      res.status(200).json(devices);
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  async delete(req: Request, res: Response) {}
+  async getOne(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const devices = await DB.devices.find((item) => item.id === id);
+      if (!devices || !id) throw new Error("NOO favorite or id");
+      res.status(200).json(devices);
+    } catch (err) {
+      next(err);
+    }
+  }
 
-  async update(req: Request, res: Response) {}
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const device: Device = req.body;
+      const index = await DB.devices.findIndex((item) => item.id === id);
+
+      device.id === id;
+      if (!device || index === -1) {
+        throw new RequestError(
+          "Error in updat Favorites: no favorite with such user_id",
+          404
+        );
+      }
+      await DB.devices.splice(index, 1, device);
+      res.status(201).json(device);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const index = await DB.favorites.findIndex((item) => item.user_id === id);
+      if (index === -1) {
+        throw new RequestError(
+          "Error in delete Favorites: no favorite with such user_id",
+          404
+        );
+      }
+      await DB.favorites.splice(index, 1);
+      res.status(201);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default new DeviceController();

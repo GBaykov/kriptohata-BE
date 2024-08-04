@@ -4,6 +4,7 @@ import { User } from "../types";
 import DB from "../db/db";
 import { RequestError } from "../static/utils";
 import { v4 as uuid } from "uuid";
+import favoritesController from "./favoritesController";
 
 class UserController {
   static toResponse(user: User) {
@@ -18,8 +19,15 @@ class UserController {
       if (!user.email || !user.password || !user.tel || !user.name)
         throw new RequestError("Error: can not create user", 404);
       user.id = uuid();
+      user.favourites_id = uuid();
       await DB.users.push(user);
       const user_to_responce = UserController.toResponse(user);
+
+      const favoritesRequest: any = { ...req };
+      favoritesRequest.body.user_id = user.id;
+      favoritesRequest.body.id = user.favourites_id;
+      favoritesController.create(favoritesRequest, res, next);
+
       res.status(201).json(user_to_responce);
     } catch (err) {
       next(err);
@@ -40,21 +48,12 @@ class UserController {
     }
   }
 
-  // async check(req: Request, res: Response, next: NextFunction) {
-  //   const { id } = req.query;
-  //   if (!id) {
-  //     return next(ApiError.badRequest("ID not set"));
-  //   }
-  //   res.json(id);
-  // }
-
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const users = await DB.users;
       if (!users) throw new Error("NOO users");
-      // res.json(users.map(UserController.toResponse));
+
       res.status(200).json(users.map(UserController.toResponse));
-      //
     } catch (err) {
       next(err);
     }
@@ -87,10 +86,6 @@ class UserController {
       new_user.id = id;
       await DB.users.splice(index, 1, new_user);
       res.status(201).json(UserController.toResponse(new_user));
-
-      // if (user && new_user && index !== -1) {
-
-      // } else throw new RequestError("Error: error while updeting user", 404);
     } catch (err) {
       next(err);
     }
