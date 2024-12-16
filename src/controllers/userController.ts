@@ -9,7 +9,7 @@ import favoritesController from "./favoritesController";
 class UserController {
   static toResponse(user: User) {
     const { password, ...data } = user;
-    return { ...data };
+    return data;
   }
 
   async registration(req: Request, res: Response, next: NextFunction) {
@@ -22,6 +22,8 @@ class UserController {
       user.favourites_id = uuid();
       await DB.users.push(user);
       const user_to_responce = UserController.toResponse(user);
+      console.log(user);
+      console.log(user_to_responce);
 
       const favoritesRequest: any = { ...req };
       favoritesRequest.body.user_id = user.id;

@@ -10,15 +10,11 @@ import DB from "../db/db";
 class OrdersController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
+      const date = new Date();
       const order: Order = req.body;
       order.id = uuid();
-      if (
-        !order ||
-        !order.date ||
-        !order.user_name ||
-        !order.user_tel ||
-        !order.items
-      ) {
+      order.date = date.toString();
+      if (!order || !order.user_name || !order.user_tel || !order.items) {
         throw new RequestError("Error: can not create order", 404);
       }
       await DB.orders.push(order);
@@ -42,7 +38,7 @@ class OrdersController {
   async getOneByUserId(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const order = await DB.orders.find((item) => item.user_id === id);
+      const order = await DB.orders.filter((item) => item.user_id === id);
       if (!order || !id) throw new Error("NOO favorite or id");
       res.status(200).json(order);
     } catch (err) {

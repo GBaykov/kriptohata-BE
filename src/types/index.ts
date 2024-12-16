@@ -60,10 +60,9 @@ export type Order = {
   id: string;
   user_id?: string;
   date: string;
-  isAuthorized: boolean;
   user_name: string;
   user_tel: string;
-  items: [Device];
+  items: Device[];
 };
 
 export type Favorite = {

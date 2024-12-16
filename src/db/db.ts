@@ -17,7 +17,7 @@ export const videocard: Videocard = {
   price: 560,
   exists: ExistType.onOrder,
   article_number: "123755",
-  img: "string",
+  img: "",
   currency: [
     {
       name: "Bitcoin SV",
@@ -39,7 +39,7 @@ const old_miner: Miner = {
   price: 3100,
   exists: ExistType.exist,
   article_number: "001001",
-  img: "string",
+  img: "",
 
   currency: [
     {
@@ -71,7 +71,7 @@ const new_miner: Device = {
   price: 3500,
   exists: ExistType.exist,
   article_number: "001001",
-  img: "string",
+  img: "",
 
   currency: [
     {
@@ -117,7 +117,6 @@ const orders: Order[] = [
     id: "string",
     user_id: "Admin",
     date: "01-08-2024",
-    isAuthorized: true,
     user_name: "Admin",
     user_tel: "+375 29 195-75-44",
     items: [old_miner],
