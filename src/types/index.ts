@@ -54,6 +54,8 @@ export type User = {
   favourites_id: string | null;
 };
 
+export type CreateUserDto = Omit<User, "id" | "favourites_id">;
+
 export type CallBack = { id: string; name: string; tel: string };
 
 export type Order = {

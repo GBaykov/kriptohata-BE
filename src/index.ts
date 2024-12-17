@@ -8,6 +8,8 @@ import fileUpload from "express-fileupload";
 import router from "./routes";
 import errorHendler from "./middleware/ErrorHandlingMiddlewarw";
 import path from "path";
+import { MongoClient } from "mongodb";
+import mongoose, { ConnectOptions } from "mongoose";
 import { handleErrors } from "./static/utils";
 
 //  import models from './models/models';
@@ -15,6 +17,7 @@ import { handleErrors } from "./static/utils";
 // import {User, Type, Basket, BascetDevice, Chosen, ChosenDevice, Device, DeviceInfo, Rating} from './models/models';
 
 const PORT = process.env.PORT || 5000;
+const MONGO_PROD_URI = process.env.MONGO_DEV_URI || "";
 
 const app = express();
 
@@ -36,8 +39,18 @@ app.get("/", (req: Request, res: Response) => {
 
 const start = async () => {
   try {
+    // mongoose.connect(MONGO_PROD_URI, {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    // } as ConnectOptions)
+
+    mongoose
+      .connect(MONGO_PROD_URI, {} as ConnectOptions)
+      .then(() => console.log("Mongo Database connected!"))
+      .catch((err) => console.log(err));
+
     app.listen(PORT, () => {
-      console.log(`server start on PORT ${PORT}`);
+      console.log(`server start on http://localhost:${PORT}`);
     });
   } catch (e) {
     console.log(e);
