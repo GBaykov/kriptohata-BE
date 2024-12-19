@@ -17,7 +17,7 @@ import { handleErrors } from "./static/utils";
 // import {User, Type, Basket, BascetDevice, Chosen, ChosenDevice, Device, DeviceInfo, Rating} from './models/models';
 
 const PORT = process.env.PORT || 5000;
-const MONGO_PROD_URI = process.env.MONGO_DEV_URI || "";
+const MONGO_DEV_URL = process.env.MONGO_DEV_URL || "";
 
 const app = express();
 
@@ -45,12 +45,15 @@ const start = async () => {
     // } as ConnectOptions)
 
     mongoose
-      .connect(MONGO_PROD_URI, {} as ConnectOptions)
+      .connect(MONGO_DEV_URL, {} as ConnectOptions)
       .then(() => console.log("Mongo Database connected!"))
       .catch((err) => console.log(err));
 
     app.listen(PORT, () => {
       console.log(`server start on http://localhost:${PORT}`);
+    });
+    mongoose.connection.on("error", (err) => {
+      console.log(err);
     });
   } catch (e) {
     console.log(e);

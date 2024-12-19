@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 
 export const UserSchema = new mongoose.Schema({
+  id: String,
   name: String,
   email: String,
   password: String,
   tel: String,
   role: String,
   favourites_id: String,
-  joined: {
-    type: Date,
-    default: Date.now,
-  },
+  // joined: {
+  //   type: Date,
+  //   default: Date.now,
+  // },
 });
 
 //   export type User = {

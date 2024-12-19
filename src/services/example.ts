@@ -8,6 +8,7 @@ export const createMongoUser = async (data: CreateUserDto) => {
     password: "Default",
     tel: "+375 29 195-75-44",
     role: "Admin",
+    favourites_id: "admin_favorite_id",
   };
   //     const newUser = new User({
   //         id: "Admin2",
@@ -20,6 +21,5 @@ export const createMongoUser = async (data: CreateUserDto) => {
   //       });
   const newUser = new User(data || default_user);
 
-  newUser.save().then(() => console.log("Saved new user"));
-  return newUser;
+  return newUser.save().then(() => console.log("Saved new user"));
 };

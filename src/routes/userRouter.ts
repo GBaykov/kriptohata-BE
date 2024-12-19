@@ -1,5 +1,6 @@
 import express, { Router, Request, Response, NextFunction } from "express";
-import userController from "../controllers/userController";
+import userController from "../controllers/mongoUserController";
+// import userController from "../controllers/userController";
 const userRouter: Router = express.Router();
 
 userRouter.post("/registration", userController.registration);
