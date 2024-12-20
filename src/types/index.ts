@@ -30,6 +30,7 @@ export type Miner = {
   hash_power: number;
   hash_algorithm: string;
 };
+
 export enum DeviceType {
   Videocard = "Videocard",
   OldMiner = "OldMiner",

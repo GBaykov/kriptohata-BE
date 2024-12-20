@@ -44,26 +44,6 @@ class CallBacksController {
     }
   }
 
-  //   async update(req: Request, res: Response, next: NextFunction) {
-  //     try {
-  //       const { id } = req.params;
-  //       const callback: CallBack = req.body;
-  //       const index = await DB.callbacks?.findIndex((item) => item.id === id);
-
-  //       callback.id === id;
-  //       if (!callback || index === -1) {
-  //         throw new RequestError(
-  //           "Error in updat callbacks: no callback with such user_id",
-  //           404
-  //         );
-  //       }
-  //       await DB.callbacks?.splice(index, 1, callback);
-  //       res.status(201).json(callback);
-  //     } catch (err) {
-  //       next(err);
-  //     }
-  //   }
-
   //   async delete(req: Request, res: Response, next: NextFunction) {
   //     try {
   //       const { id } = req.params;
@@ -83,14 +63,6 @@ class CallBacksController {
 
   async deleteAll(req: Request, res: Response, next: NextFunction) {
     try {
-      //   const { id } = req.params;
-      //   const index = await DB.favorites.findIndex((item) => item.user_id === id);
-      //   if (index === -1) {
-      //     throw new RequestError(
-      //       "Error in delete Favorites: no favorite with such user_id",
-      //       404
-      //     );
-      //   }
       await DB.callbacks.splice(0, DB.callbacks.length);
       res.status(201);
     } catch (err) {

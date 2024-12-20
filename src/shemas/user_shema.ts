@@ -2,26 +2,24 @@ import mongoose from "mongoose";
 
 export const UserSchema = new mongoose.Schema({
   id: String,
-  name: String,
-  email: String,
-  password: String,
-  tel: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  tel: {
+    type: String,
+    required: true,
+  },
   role: String,
   favourites_id: String,
-  // joined: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
 });
-
-//   export type User = {
-//     id: string;
-//     name: string;
-//     email: string;
-// password: string;
-// tel: string;
-// role: string;
-//     favourites_id: string | null;
-//   };
 
 export const User = mongoose.model("users", UserSchema);

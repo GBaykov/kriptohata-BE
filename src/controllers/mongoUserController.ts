@@ -20,7 +20,7 @@ class UserController {
           tel,
           role,
         });
-        res.status(200).json(newUser);
+        return res.status(200).json(newUser);
       } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
       }
@@ -30,14 +30,8 @@ class UserController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await User.find({ email: req.body.email });
-      // const user = DB.users.find(
-      //   (user) =>
-      //     user.email === req.body.email && user.password === req.body.password
-      // );
       if (!user)
         throw new RequestError("Error: can not find user by email", 404);
-
-      // const user_to_responce = UserController.toResponse(user);
       return res.status(201).json(user);
     } catch (err) {
       next(err);
@@ -79,21 +73,14 @@ class UserController {
       }
       const data = req.body;
       if (!data) {
-        return res
-          .status(422)
-          .json({ message: "The fields for update are required" });
+        throw new RequestError(
+          "Error: The fields for update are required",
+          404
+        );
       }
-
-      console.log(data);
       await User.updateOne({ _id: id }, { ...data });
-
       const userUpdated = await User.findById(id);
-
       return res.status(200).json(userUpdated);
-
-      // const new_user = { ...user, ...data };
-      // new_user.id = id;
-      // await DB.users.splice(index, 1, new_user);
     } catch (err) {
       next(err);
     }
@@ -105,7 +92,7 @@ class UserController {
       const user = await User.findOne({ _id: id });
       if (!user) {
         throw new RequestError(
-          "Error in updateUser: no user with such id",
+          "Error while delete User: no user with such id",
           404
         );
       }
@@ -118,23 +105,3 @@ class UserController {
 }
 
 export default new UserController();
-
-// exports.createExample = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const { name, email, password, tel, role } = req.body;
-//     const newUser = await createMongoUser({
-//       name,
-//       email,
-//       password,
-//       tel,
-//       role,
-//     });
-//     res.status(201).json(newUser);
-//   } catch (error) {
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
