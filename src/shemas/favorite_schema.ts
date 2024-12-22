@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { DeviceSchema } from './device_shema';
+import { DeviceSchema } from './device_schema';
 
 export const FavoriteSchema = new Schema({
   id: Schema.Types.ObjectId,

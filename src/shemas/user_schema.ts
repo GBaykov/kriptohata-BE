@@ -27,12 +27,12 @@ export const UserSchema = new mongoose.Schema({
     enum: ['Admin', 'Customer'],
     required: true,
   },
-  favourites_id: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Favorite',
-    },
-  ],
+  favourites_id: String,
+  favourites: {
+    type: Schema.Types.ObjectId,
+    ref: 'Favorite',
+  },
+
   // favourites_id: String,
 });
 

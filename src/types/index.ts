@@ -1,3 +1,5 @@
+import { Schema } from 'mongoose';
+
 export type Videocard = {
   id: string;
   type: DeviceType.Videocard;
@@ -32,18 +34,18 @@ export type Miner = {
 };
 
 export enum DeviceType {
-  Videocard = "Videocard",
-  OldMiner = "OldMiner",
-  NewMiner = "NewMiner",
+  Videocard = 'Videocard',
+  OldMiner = 'OldMiner',
+  NewMiner = 'NewMiner',
 }
 export enum ExistType {
-  exist = "exist",
-  onOrder = "onOrder",
-  notExist = "notExist",
+  exist = 'exist',
+  onOrder = 'onOrder',
+  notExist = 'notExist',
 }
 
 export type Device = Videocard | Miner;
-export type UserRole = "Admin" | "Customer";
+export type UserRole = 'Admin' | 'Customer';
 
 export type User = {
   id: string;
@@ -55,7 +57,15 @@ export type User = {
   favourites_id: string | null;
 };
 
-export type CreateUserDto = Omit<User, "id" | "favourites_id">;
+export type CreateUserDto = {
+  name: string;
+  email: string;
+  password: string;
+  tel: string;
+  role: string;
+};
+
+export type UpdateUserDto = Partial<CreateUserDto>;
 
 export type CallBack = { id: string; name: string; tel: string };
 
