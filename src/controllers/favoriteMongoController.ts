@@ -1,11 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { Device, Favorite } from '../types';
-import { RequestError } from '../static/utils';
+import { handleErrors, RequestError } from '../static/utils';
 
-import DB from '../db/db';
 import {
   createFavorite,
   deleteFavorite,
+  findAllFavorites,
+  findFavoriteById,
   updateFavoriteById,
   //   updateFavoriteByUserId,
 } from '../services/favorite_service';
@@ -14,9 +15,16 @@ import { json } from 'body-parser';
 
 class FavoritesController {
   async create(req: Request, res: Response, next: NextFunction) {
-    const user_id = req.body.user_id;
-    const favorite = await createFavorite(user_id);
-    res.status(StatusCodes.CREATED).json(favorite);
+    try {
+      const user_id = req.body.user_id;
+      const favorite = await createFavorite(user_id);
+      res.status(StatusCodes.CREATED).json(favorite);
+    } catch (err) {
+      //   const error = err as RequestError;
+      //   handleErrors(error, req, res, next);
+      console.log();
+    }
+
     // try {
     //   const id = req.body.id;
     //   const items: Device[] = [];
@@ -32,25 +40,28 @@ class FavoritesController {
   }
 
   async getAll(req: Request, res: Response, next: NextFunction) {
-    try {
-      const favorites = await DB.favorites;
-      if (!favorites) throw new Error('NOO favorites');
+    const favorites = findAllFavorites();
+    res.status(StatusCodes.OK).json(favorites);
+    // try {
+    //   const favorites = await DB.favorites;
+    //   if (!favorites) throw new Error('NOO favorites');
 
-      res.status(200).json(favorites);
-    } catch (err) {
-      next(err);
-    }
+    //   res.status(200).json(favorites);
+    // } catch (err) {
+    //   next(err);
+    // }
   }
 
   async getOne(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const favorite = await DB.favorites.find((item) => item.id === id);
-      if (!favorite || !id) throw new Error('NOO favorite or id');
-      res.status(200).json(favorite);
-    } catch (err) {
-      next(err);
-    }
+    // try {
+    const { id } = req.params;
+    const favorite = await findFavoriteById(id);
+    //   const favorite = await DB.favorites.find((item) => item.id === id);
+    //   if (!favorite || !id) throw new Error('NOO favorite or id');
+    res.status(200).json(favorite);
+    // } catch (err) {
+    //   next(err);
+    // }
   }
 
   // async getOneByUserId(req: Request, res: Response, next: NextFunction) {

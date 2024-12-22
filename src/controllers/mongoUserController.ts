@@ -9,7 +9,7 @@ import {
 } from '../services/user_service';
 import { User as UserType } from '../types';
 import { User } from '../shemas/user_schema';
-import { RequestError } from '../static/utils';
+import { handleErrors, RequestError } from '../static/utils';
 import { StatusCodes } from 'http-status-codes';
 
 class UserController {
@@ -36,15 +36,21 @@ class UserController {
   // }
 
   async registration(req: Request, res: Response, next: NextFunction) {
-    const { name, email, password, tel, role } = req.body;
-    const newUser = await createUser({
-      name,
-      email,
-      password,
-      tel,
-      role,
-    });
-    return res.status(StatusCodes.CREATED).json(newUser);
+    try {
+      const { name, email, password, tel, role } = req.body;
+      const newUser = await createUser({
+        name,
+        email,
+        password,
+        tel,
+        role,
+      });
+      return res.status(StatusCodes.CREATED).json(newUser);
+    } catch (err) {
+      console.log(err);
+      const error = err as RequestError;
+      handleErrors(error, req, res, next);
+    }
   }
 
   async login(req: Request, res: Response, next: NextFunction) {
@@ -83,8 +89,9 @@ class UserController {
   };
 
   getAll = async (req: Request, res: Response, next: NextFunction) => {
-    const users = findAllUsers();
-    return res.status(StatusCodes.OK).json(users);
+    const users = await findAllUsers();
+    console.log(users);
+    res.status(StatusCodes.OK).json(users);
     // try {
     //   const users = await User.find();
     //   return res.status(200).json(users);

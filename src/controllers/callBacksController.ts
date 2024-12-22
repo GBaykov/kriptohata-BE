@@ -1,11 +1,11 @@
-import express, { Router, Request, Response, NextFunction } from "express";
-import { v4 as uuid } from "uuid";
-import fileUpload from "express-fileupload";
-import path from "path";
-import ApiError from "../error/ApiError";
-import { CallBack, Device } from "../types";
-import { RequestError } from "../static/utils";
-import DB from "../db/db";
+import express, { Router, Request, Response, NextFunction } from 'express';
+import { v4 as uuid } from 'uuid';
+import fileUpload from 'express-fileupload';
+import path from 'path';
+import ApiError from '../error/ApiError';
+import { CallBack, Device } from '../types';
+import { RequestError } from '../static/utils';
+const DB: any = [];
 
 class CallBacksController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -13,7 +13,7 @@ class CallBacksController {
       const callback: CallBack = req.body;
       callback.id = uuid();
       if (!callback.id || !callback.name || !callback.tel) {
-        throw new RequestError("Error: can not create callback", 404);
+        throw new RequestError('Error: can not create callback', 404);
       }
       await DB.callbacks?.push(callback);
       res.status(201).json(callback);
@@ -25,7 +25,7 @@ class CallBacksController {
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
       const callbacks = await DB.callbacks;
-      if (!callbacks) throw new Error("NOO callbacks");
+      if (!callbacks) throw new Error('NOO callbacks');
 
       res.status(200).json(callbacks);
     } catch (err) {
@@ -33,16 +33,16 @@ class CallBacksController {
     }
   }
 
-  async getOne(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params;
-      const callback = await DB.callbacks?.find((item) => item.id === id);
-      if (!callback || !id) throw new Error("NOO callback or id");
-      res.status(200).json(callback);
-    } catch (err) {
-      next(err);
-    }
-  }
+  // async getOne(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     const { id } = req.params;
+  //     const callback = await DB.callbacks?.find((item) => item.id === id);
+  //     if (!callback || !id) throw new Error('NOO callback or id');
+  //     res.status(200).json(callback);
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
 
   //   async delete(req: Request, res: Response, next: NextFunction) {
   //     try {

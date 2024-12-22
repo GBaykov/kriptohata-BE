@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { config } from 'dotenv';
 config();
-import sequelize from './db/db';
 // import * as models from "./models/models";
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
@@ -48,9 +47,11 @@ const start = async () => {
       console.log(`server start on http://localhost:${PORT}`);
     });
     mongoose.connection.on('error', (err) => {
+      handleErrors;
       console.log(err);
     });
   } catch (e) {
+    handleErrors;
     console.log(e);
   }
 };

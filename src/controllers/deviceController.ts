@@ -5,7 +5,6 @@ import path from 'path';
 import ApiError from '../error/ApiError';
 import { Device as DeviceType } from '../types';
 import { RequestError } from '../static/utils';
-import DB from '../db/db';
 import { Device } from '../shemas/device_schema';
 import { StatusCodes } from 'http-status-codes';
 import {

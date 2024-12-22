@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { User } from '../shemas/user_schema';
-import { RequestError } from '../static/utils';
+import { handleErrors, RequestError } from '../static/utils';
 import { CreateUserDto, UpdateUserDto, User as UserType } from '../types';
 import mongoose from 'mongoose';
 import { createFavorite } from './favorite_service';
@@ -15,17 +15,27 @@ export const createUser = async (data: CreateUserDto) => {
   //   );
   // }
 
-  try {
-    const newUser = new User({ id: new mongoose.Types.ObjectId(), ...data });
-    const newFav = await createFavorite(newUser.id);
-    if (newFav)
-      await User.updateOne({ id: newUser.id }, { favourites_id: newFav.id });
-    // newUser.favourites_id = newFav.id;
-    newUser.save().then(() => console.log('Saved new user'));
-    return newUser;
-  } catch (err) {
-    console.log(err);
-  }
+  const newUser = new User({ id: new mongoose.Types.ObjectId(), ...data });
+  const newFav = await createFavorite(newUser.id);
+  if (newFav)
+    await User.updateOne({ id: newUser.id }, { favourites_id: newFav.id });
+  // newUser.favourites_id = newFav.id;
+  // return newUser.save().then(() => console.log('Saved new user'));
+
+  newUser
+    .save()
+    .then(() => console.log('мяу'))
+    .catch((err) => {
+      if (err) {
+        console.log('ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
+        console.log(err.errors);
+        //  throw new RequestError(err.status, err.message);
+      }
+    });
+  return newUser;
+
+  // const error = err as RequestError;
+  // handleErrors(error, req, res, next);
 };
 
 export const findUserByEmail = async (email: string) => {
@@ -44,7 +54,8 @@ export const findUserByEmail = async (email: string) => {
 export const findUserById = async (id: string) => {
   if (!id)
     throw new RequestError('Error: id is missing', StatusCodes.BAD_REQUEST);
-  const user = await User.findById(id).select('-password');
+  // const user = await User.findById(id).select('-password');
+  const user = await User.findById(id);
   if (!user)
     throw new RequestError(
       'Error: can not find user by id',
@@ -54,7 +65,8 @@ export const findUserById = async (id: string) => {
 };
 
 export const findAllUsers = async () => {
-  const users = await User.find().select('-password');
+  // const users = await User.find().select('-password');
+  const users = await User.find();
   return users;
 };
 

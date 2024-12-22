@@ -14,8 +14,11 @@ export const createFavorite = async (user_id: mongoose.Types.ObjectId) => {
       user_id,
       items: [],
     });
-
-    Favorite.create(newFavorite);
+    newFavorite
+      .save()
+      .then(() => console.log('favorite saved '))
+      .catch((err) => console.log(err));
+    // Favorite.create(newFavorite);
     // newFavorite.save().then(() => console.log('Saved new user`s favorite'));
     return newFavorite;
 

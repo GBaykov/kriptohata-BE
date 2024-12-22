@@ -12,7 +12,7 @@ export const UserSchema = new mongoose.Schema({
     type: String,
     match: [/\w+@\w+\.\w+/, 'Неправильный адрес электронной почты'],
     required: [true, 'Email не может быть пустым'],
-    unique: true,
+    // unique: true,
   },
   password: {
     type: String,
@@ -21,11 +21,11 @@ export const UserSchema = new mongoose.Schema({
   tel: {
     type: String,
     required: [true, 'tel не может быть пустым'],
-    unique: true,
+    // unique: true,
   },
   role: {
+    type: String,
     enum: ['Admin', 'Customer'],
-    // required: true,
   },
   favourites_id: String,
   favourites: {
