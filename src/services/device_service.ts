@@ -48,12 +48,13 @@ export const updateDevice = async (id: string, device_dto: any) => {
 
   await Device.findByIdAndUpdate(id, { ...device_dto });
   const updated_device = await Device.findById(id);
+  return updated_device;
 };
 
 export const deleteDevice = async (id: string) => {
   if (!id) {
     throw new RequestError(
-      'Error in deleteFavorite: id is missing',
+      'Error in deleteDevice: id is missing',
       StatusCodes.NOT_FOUND,
     );
   }
