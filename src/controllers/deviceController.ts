@@ -1,13 +1,13 @@
-import express, { Router, Request, Response, NextFunction } from "express";
-import { v4 as uuid } from "uuid";
-import fileUpload from "express-fileupload";
-import path from "path";
-import ApiError from "../error/ApiError";
-import { Device as DeviceType } from "../types";
-import { RequestError } from "../static/utils";
-import DB from "../db/db";
-import { Device } from "../shemas/devicer_shema";
-import { StatusCodes } from "http-status-codes";
+import express, { Router, Request, Response, NextFunction } from 'express';
+import { v4 as uuid } from 'uuid';
+import fileUpload from 'express-fileupload';
+import path from 'path';
+import ApiError from '../error/ApiError';
+import { Device as DeviceType } from '../types';
+import { RequestError } from '../static/utils';
+import DB from '../db/db';
+import { Device } from '../shemas/device_shema';
+import { StatusCodes } from 'http-status-codes';
 
 class DeviceController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -26,7 +26,7 @@ class DeviceController {
         !device.type ||
         !device.price
       )
-        throw new RequestError("Error: can not create device", 404);
+        throw new RequestError('Error: can not create device', 404);
       const new_device = new Device(device);
       await Device.create(new_device);
       res.status(201).json(new_device);
@@ -51,7 +51,7 @@ class DeviceController {
       const { id } = req.params;
       const devices = await Device.findById(id);
       if (!devices || !id)
-        throw new Error("Error: Device with such id not found");
+        throw new Error('Error: Device with such id not found');
       res.status(200).json(devices);
     } catch (err) {
       next(err);
@@ -64,13 +64,13 @@ class DeviceController {
       const device_dto = req.body;
       if (!device_dto) {
         throw new RequestError(
-          "Error: Device whith such id not found",
-          StatusCodes.UNPROCESSABLE_ENTITY
+          'Error: Device whith such id not found',
+          StatusCodes.UNPROCESSABLE_ENTITY,
         );
       }
       const device = await Device.findById(id);
       if (!device) {
-        throw new RequestError("Error: Device whith such id not found", 404);
+        throw new RequestError('Error: Device whith such id not found', 404);
       }
 
       await Device.findByIdAndUpdate(id, { ...device_dto });
@@ -87,8 +87,8 @@ class DeviceController {
       const device = await Device.findById(id);
       if (!device) {
         throw new RequestError(
-          "Error: Device whist such id not found",
-          StatusCodes.NOT_FOUND
+          'Error: Device whist such id not found',
+          StatusCodes.NOT_FOUND,
         );
       }
       await Device.findByIdAndDelete(id);

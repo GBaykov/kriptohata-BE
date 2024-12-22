@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
 export class RequestError extends Error {
   public status: number;
@@ -7,17 +7,18 @@ export class RequestError extends Error {
 
   constructor(message: string, status: number) {
     super(message);
-    this.name = "Request Error";
-    this.message = message || "Server Error!";
+    this.name = 'Request Error';
+    this.message = message || 'Server Error!';
     this.status = status || 404;
   }
 }
 
 export function handleErrors(
-  err: Error,
+  err: RequestError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
-  res.status(404).json(err.message);
+  console.log(err);
+  res.status(err.status).json(err.message);
 }

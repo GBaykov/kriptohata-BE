@@ -1,0 +1,16 @@
+import mongoose, { Schema } from 'mongoose';
+import { DeviceSchema } from './device_shema';
+
+export const CallbackSchema = new Schema({
+  id: Schema.Types.ObjectId,
+  name: {
+    type: String,
+    required: [true, 'Имя не может быть пустым'],
+  },
+  tel: {
+    type: String,
+    requred: [true, 'tel не может быть пустым'],
+  },
+});
+
+export const Callback = mongoose.model('Callback', CallbackSchema);

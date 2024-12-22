@@ -1,14 +1,18 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
-  id: String,
+  id: Schema.Types.ObjectId,
   name: {
     type: String,
-    required: true,
+    minLength: [2, 'Имя слишком короткое'],
+    maxLength: [12, 'Имя слишком длинное'],
+    required: [true, 'Имя не может быть пустым'],
   },
   email: {
     type: String,
-    required: true,
+    match: [/\w+@\w+\.\w+/, 'Неправильный адрес электронной почты'],
+    requred: [true, 'Email не может быть пустым'],
+    unique: true,
   },
   password: {
     type: String,
@@ -16,10 +20,20 @@ export const UserSchema = new mongoose.Schema({
   },
   tel: {
     type: String,
+    requred: [true, 'tel не может быть пустым'],
+    unique: true,
+  },
+  role: {
+    enum: ['Admin', 'Customer'],
     required: true,
   },
-  role: String,
-  favourites_id: String,
+  favourites_id: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Favorite',
+    },
+  ],
+  // favourites_id: String,
 });
 
-export const User = mongoose.model("users", UserSchema);
+export const User = mongoose.model('User', UserSchema);

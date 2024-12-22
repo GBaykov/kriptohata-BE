@@ -1,13 +1,23 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from 'mongoose';
+import { DeviceSchema } from './device_shema';
 
-export const UserSchema = new mongoose.Schema({
-  id: String,
-  name: String,
-  email: String,
-  password: String,
-  tel: String,
-  role: String,
-  favourites_id: String,
+export const OrderSchema = new mongoose.Schema({
+  id: Schema.Types.ObjectId,
+  user_id: String,
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
+  user_name: {
+    type: String,
+    require: true,
+  },
+  user_tel: {
+    type: String,
+    require: true,
+  },
+
+  items: [DeviceSchema],
 });
 
-export const User = mongoose.model("users", UserSchema);
+export const Order = mongoose.model('Order', OrderSchema);

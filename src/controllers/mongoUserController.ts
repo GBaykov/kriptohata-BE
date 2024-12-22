@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
-import { createMongoUser } from "../services/example";
-import { User as UserType } from "../types";
-import { User } from "../shemas/user_shema";
-import { RequestError } from "../static/utils";
+import { NextFunction, Request, Response } from 'express';
+import { createMongoUser } from '../services/user_service';
+import { User as UserType } from '../types';
+import { User } from '../shemas/user_shema';
+import { RequestError } from '../static/utils';
 
 class UserController {
   static toResponse(user: UserType) {
@@ -22,7 +22,7 @@ class UserController {
         });
         return res.status(200).json(newUser);
       } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ error: 'Internal Server Error' });
       }
     }
   }
@@ -31,7 +31,7 @@ class UserController {
     try {
       const user = await User.find({ email: req.body.email });
       if (!user)
-        throw new RequestError("Error: can not find user by email", 404);
+        throw new RequestError('Error: can not find user by email', 404);
       return res.status(201).json(user);
     } catch (err) {
       next(err);
@@ -43,7 +43,7 @@ class UserController {
       const { id } = req.params;
       const user = await User.findById(id);
       if (!user) {
-        throw new RequestError("Error in findUser: no user with such id", 404);
+        throw new RequestError('Error in findUser: no user with such id', 404);
       }
       return res.status(200).json(user);
     } catch (err) {
@@ -67,15 +67,15 @@ class UserController {
 
       if (!user) {
         throw new RequestError(
-          "Error in updateUser: no user with such id",
-          404
+          'Error in updateUser: no user with such id',
+          404,
         );
       }
       const data = req.body;
       if (!data) {
         throw new RequestError(
-          "Error: The fields for update are required",
-          404
+          'Error: The fields for update are required',
+          404,
         );
       }
       await User.updateOne({ _id: id }, { ...data });
@@ -92,12 +92,12 @@ class UserController {
       const user = await User.findOne({ _id: id });
       if (!user) {
         throw new RequestError(
-          "Error while delete User: no user with such id",
-          404
+          'Error while delete User: no user with such id',
+          404,
         );
       }
       await User.findByIdAndDelete({ _id: id });
-      return res.status(204).json("Success while delete user");
+      return res.status(204).json('Success while delete user');
     } catch (err) {
       next(err);
     }
