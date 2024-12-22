@@ -18,7 +18,9 @@ export const createUser = async (data: CreateUserDto) => {
   try {
     const newUser = new User({ id: new mongoose.Types.ObjectId(), ...data });
     const newFav = await createFavorite(newUser.id);
-    if (newFav) newUser.favourites_id = newFav.id;
+    if (newFav)
+      await User.updateOne({ id: newUser.id }, { favourites_id: newFav.id });
+    // newUser.favourites_id = newFav.id;
     newUser.save().then(() => console.log('Saved new user'));
     return newUser;
   } catch (err) {
