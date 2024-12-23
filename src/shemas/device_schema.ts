@@ -41,7 +41,6 @@ export const MinerSchema = new mongoose.Schema({
 });
 
 export const DeviceSchema = new mongoose.Schema({
-  id: Schema.Types.ObjectId,
   name: {
     type: String,
     required: true,
@@ -52,7 +51,6 @@ export const DeviceSchema = new mongoose.Schema({
   },
   exists: {
     enum: ['exist', 'onOrder', 'notExist'],
-    // required: true,
   },
   article_number: {
     type: String,
@@ -67,11 +65,8 @@ export const DeviceSchema = new mongoose.Schema({
     required: true,
   },
 
-  // miner: [MinerSchema],
-  // videocard: [VideocardSchema],
   devce_type: {
     enum: ['Videocard', 'OldMiner', 'NewMiner'],
-    // required: true,
   },
   device_features: {
     type: [MinerSchema || VideocardSchema],

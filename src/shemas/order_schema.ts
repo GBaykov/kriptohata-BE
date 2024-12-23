@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { DeviceSchema } from './device_schema';
 
 export const OrderSchema = new mongoose.Schema({
-  id: Schema.Types.ObjectId,
   user_id: String,
 
   date: {

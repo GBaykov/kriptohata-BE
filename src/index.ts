@@ -9,7 +9,7 @@ import errorHendler from './middleware/ErrorHandlingMiddlewarw';
 import path from 'path';
 import { MongoClient } from 'mongodb';
 import mongoose, { ConnectOptions } from 'mongoose';
-import { handleErrors } from './static/utils';
+import { handleErrors, RequestError } from './static/utils';
 
 //  import models from './models/models';
 
@@ -32,10 +32,6 @@ process.on('uncaughtException', (err) => {
   setTimeout(() => process.exit(1), 1000);
 });
 
-app.get('/', (req: Request, res: Response, next) => {
-  res.status(200).json({ message: 'WORKING' });
-});
-
 const start = async () => {
   try {
     mongoose
@@ -51,7 +47,6 @@ const start = async () => {
       console.log(err);
     });
   } catch (e) {
-    handleErrors;
     console.log(e);
   }
 };

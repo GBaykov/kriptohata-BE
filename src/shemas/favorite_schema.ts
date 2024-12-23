@@ -2,7 +2,6 @@ import mongoose, { Schema } from 'mongoose';
 import { DeviceSchema } from './device_schema';
 
 export const FavoriteSchema = new Schema({
-  id: Schema.Types.ObjectId,
   user_id: {
     type: Schema.Types.ObjectId,
     ref: 'User',

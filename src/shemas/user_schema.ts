@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({
-  id: Schema.Types.ObjectId,
   name: {
     type: String,
     minLength: [2, 'name слишком короткое'],
@@ -27,8 +26,8 @@ export const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['Admin', 'Customer'],
   },
-  favourites_id: String,
-  favourites: {
+  // favourites_id: Schema.Types.ObjectId,
+  favourites_id: {
     type: Schema.Types.ObjectId,
     ref: 'Favorite',
   },

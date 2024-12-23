@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose, { ObjectId, Schema } from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
 import { RequestError } from '../static/utils';
 import { Favorite } from '../shemas/favorite_schema';
@@ -10,7 +10,6 @@ export const createFavorite = async (user_id: mongoose.Types.ObjectId) => {
       throw new RequestError('Error: can not create user favorites', 404);
     }
     const newFavorite = new Favorite({
-      id: new mongoose.Types.ObjectId(),
       user_id,
       items: [],
     });
@@ -74,7 +73,7 @@ export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
       StatusCodes.NOT_FOUND,
     );
   }
-  const device = Device.find({ id: device_id });
+  const device = Device.find({ _id: device_id });
   if (!device)
     throw new RequestError(
       'Error in updateFavorite: no device with such device_id',
@@ -89,7 +88,7 @@ export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
   } else {
     users_favorite?.items.push(device);
   }
-  await Favorite.updateOne({ id: id }, { ...users_favorite });
+  await Favorite.updateOne({ _id: id }, { ...users_favorite });
 
   const updated_favorite = await Favorite.findById(id);
   return updated_favorite;
@@ -134,7 +133,7 @@ export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
 //   return updated_favorite;
 // };
 
-export const deleteFavorite = async (id: string) => {
+export const deleteFavorite = async (id: mongoose.Types.ObjectId | string) => {
   if (!id) {
     throw new RequestError(
       'Error in deleteFavorite: id is missing',

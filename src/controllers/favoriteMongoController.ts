@@ -20,48 +20,30 @@ class FavoritesController {
       const favorite = await createFavorite(user_id);
       res.status(StatusCodes.CREATED).json(favorite);
     } catch (err) {
-      //   const error = err as RequestError;
-      //   handleErrors(error, req, res, next);
-      console.log();
+      const error = err as RequestError;
+      handleErrors(error, req, res, next);
     }
-
-    // try {
-    //   const id = req.body.id;
-    //   const items: Device[] = [];
-    //   const favorite: Favorite = { user_id, id, items };
-
-    //   if (!favorite.id || !favorite.user_id || !favorite.items) {
-    //     console.log(favorite);
-    //     throw new RequestError('Error: can not create user favorites', 404);
-    //   }
-    // } catch (err) {
-    //   next(err);
-    // }
   }
 
   async getAll(req: Request, res: Response, next: NextFunction) {
-    const favorites = findAllFavorites();
-    res.status(StatusCodes.OK).json(favorites);
-    // try {
-    //   const favorites = await DB.favorites;
-    //   if (!favorites) throw new Error('NOO favorites');
-
-    //   res.status(200).json(favorites);
-    // } catch (err) {
-    //   next(err);
-    // }
+    try {
+      const favorites = findAllFavorites();
+      res.status(StatusCodes.OK).json(favorites);
+    } catch (err) {
+      const error = err as RequestError;
+      handleErrors(error, req, res, next);
+    }
   }
 
   async getOne(req: Request, res: Response, next: NextFunction) {
-    // try {
-    const { id } = req.params;
-    const favorite = await findFavoriteById(id);
-    //   const favorite = await DB.favorites.find((item) => item.id === id);
-    //   if (!favorite || !id) throw new Error('NOO favorite or id');
-    res.status(200).json(favorite);
-    // } catch (err) {
-    //   next(err);
-    // }
+    try {
+      const { id } = req.params;
+      const favorite = await findFavoriteById(id);
+      res.status(200).json(favorite);
+    } catch (err) {
+      const error = err as RequestError;
+      handleErrors(error, req, res, next);
+    }
   }
 
   // async getOneByUserId(req: Request, res: Response, next: NextFunction) {
@@ -76,58 +58,26 @@ class FavoritesController {
   // }
 
   async update(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    const device_id = req.body;
-    const favorite = updateFavoriteById(id, device_id);
-    res.status(StatusCodes.OK).json(favorite);
-
-    // try {
-    //   const { id } = req.params;
-    //   const data: Device = req.body;
-    //   const favorite = await DB.favorites.find((item) => item.id === id);
-    //   const index = await DB.favorites.findIndex((item) => item.id === id);
-
-    //   if (!favorite || index === -1) {
-    //     throw new RequestError(
-    //       'Error in updat Favorites: no favorite with such user_id',
-    //       404,
-    //     );
-    //   }
-
-    //   if (favorite?.items.findIndex((item) => item.name === data.name) !== -1) {
-    //     const item_index = favorite.items.findIndex(
-    //       (item) => item.id === data.id,
-    //     );
-    //     favorite.items.splice(item_index, 1);
-    //   } else {
-    //     favorite?.items.push(data);
-    //   }
-
-    //   await DB.favorites.splice(index, 1, favorite);
-    //   res.status(201).json(favorite);
-    // } catch (err) {
-    //   next(err);
-    // }
+    try {
+      const { id } = req.params;
+      const device_id = req.body;
+      const favorite = updateFavoriteById(id, device_id);
+      res.status(StatusCodes.OK).json(favorite);
+    } catch (err) {
+      const error = err as RequestError;
+      handleErrors(error, req, res, next);
+    }
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    await deleteFavorite(id);
-    res.status(StatusCodes.NO_CONTENT).json('favorite has been deleted');
-    //     try {
-    //       const { id } = req.params;
-    //       const index = await DB.favorites.findIndex((item) => item.id === id);
-    //       if (index === -1) {
-    //         throw new RequestError(
-    //           'Error in delete Favorites: no favorite with such user_id',
-    //           404,
-    //         );
-    //       }
-    //       await DB.favorites.splice(index, 1);
-    //       res.status(201);
-    //     } catch (err) {
-    //       next(err);
-    //     }
+    try {
+      const { id } = req.params;
+      await deleteFavorite(id);
+      res.status(StatusCodes.NO_CONTENT).json('favorite has been deleted');
+    } catch (err) {
+      const error = err as RequestError;
+      handleErrors(error, req, res, next);
+    }
   }
 }
 

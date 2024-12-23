@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export type Videocard = {
   id: string;
@@ -63,6 +63,7 @@ export type CreateUserDto = {
   password: string;
   tel: string;
   role: string;
+  favourites_id?: mongoose.Types.ObjectId | string;
 };
 
 export type UpdateUserDto = Partial<CreateUserDto>;

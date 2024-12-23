@@ -21,4 +21,5 @@ export function handleErrors(
 ) {
   console.log(err);
   res.status(err.status).json(err.message);
+  next();
 }
