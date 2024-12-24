@@ -1,72 +1,65 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { v4 as uuid } from 'uuid';
-import fileUpload from 'express-fileupload';
-import path from 'path';
-import ApiError from '../error/ApiError';
-import { CallBack, Device } from '../types';
-import { RequestError } from '../static/utils';
-const DB: any = [];
+
+import { handleErrors, RequestError } from '../static/utils';
+import {
+  createCallback,
+  deleteAllCallbacks,
+  deleteCallback,
+  findAllCallbacks,
+  findCallback,
+} from '../services/callback_service';
+import { StatusCodes } from 'http-status-codes';
 
 class CallBacksController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const callback: CallBack = req.body;
-      callback.id = uuid();
-      if (!callback.id || !callback.name || !callback.tel) {
-        throw new RequestError('Error: can not create callback', 404);
-      }
-      await DB.callbacks?.push(callback);
-      res.status(201).json(callback);
-    } catch (err) {
-      next(err);
+      const callback_dto = req.body;
+
+      const callback = await createCallback(callback_dto);
+      res.status(StatusCodes.CREATED).json(callback);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const callbacks = await DB.callbacks;
+      const callbacks = await findAllCallbacks();
       if (!callbacks) throw new Error('NOO callbacks');
 
-      res.status(200).json(callbacks);
-    } catch (err) {
-      next(err);
+      res.status(StatusCodes.OK).json(callbacks);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 
-  // async getOne(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const { id } = req.params;
-  //     const callback = await DB.callbacks?.find((item) => item.id === id);
-  //     if (!callback || !id) throw new Error('NOO callback or id');
-  //     res.status(200).json(callback);
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
+  async getOne(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const callback = await findCallback(id);
+      res.status(StatusCodes.OK).json(callback);
+    } catch (err: unknown) {
+      handleErrors;
+    }
+  }
 
-  //   async delete(req: Request, res: Response, next: NextFunction) {
-  //     try {
-  //       const { id } = req.params;
-  //       const index = await DB.favorites.findIndex((item) => item.user_id === id);
-  //       if (index === -1) {
-  //         throw new RequestError(
-  //           "Error in delete Favorites: no favorite with such user_id",
-  //           404
-  //         );
-  //       }
-  //       await DB.favorites.splice(index, 1);
-  //       res.status(201);
-  //     } catch (err) {
-  //       next(err);
-  //     }
-  //   }
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await deleteCallback(id);
+      res.status(StatusCodes.NO_CONTENT);
+    } catch (err: unknown) {
+      handleErrors;
+    }
+  }
 
   async deleteAll(req: Request, res: Response, next: NextFunction) {
     try {
-      await DB.callbacks.splice(0, DB.callbacks.length);
-      res.status(201);
-    } catch (err) {
-      next(err);
+      await deleteAllCallbacks();
+      res.status(StatusCodes.NO_CONTENT);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 }

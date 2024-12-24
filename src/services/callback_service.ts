@@ -2,8 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import { RequestError } from '../static/utils';
 import { Callback } from '../shemas/callback_schema';
 
-export const createCallback = async (order: any) => {
-  const new_order = new Callback(order);
+export const createCallback = async (callback_dto: any) => {
+  const new_order = new Callback(callback_dto);
   await Callback.create(new_order);
   return new_order;
 };
@@ -65,4 +65,8 @@ export const deleteCallback = async (id: string) => {
       StatusCodes.NOT_FOUND,
     );
   await Callback.findByIdAndDelete(id);
+};
+
+export const deleteAllCallbacks = async () => {
+  await Callback.deleteMany();
 };

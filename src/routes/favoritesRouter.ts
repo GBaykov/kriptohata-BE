@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 const router: Router = express.Router();
-import favoritesController from '../controllers/favoriteMongoController';
+import favoritesController from '../controllers/favoriteController';
 
 router.get('/', favoritesController.getAll);
 router.post('/', favoritesController.create);

@@ -65,10 +65,11 @@ export type CreateUserDto = {
   role: string;
   favourites_id?: mongoose.Types.ObjectId | string;
 };
-
 export type UpdateUserDto = Partial<CreateUserDto>;
 
 export type CallBack = { id: string; name: string; tel: string };
+export type CreateCallBackDto = { name: string; tel: string };
+export type UpdateCallBackDto = Partial<CreateCallBackDto>;
 
 export type Order = {
   id: string;
@@ -79,8 +80,21 @@ export type Order = {
   items: Device[];
 };
 
+export type CreateOrderDto = {
+  user_id?: string;
+  user_name: string;
+  user_tel: string;
+  items: Device[];
+};
+
+export type UpdateOrderDto = Partial<CreateOrderDto>;
+
 export type Favorite = {
   id: string;
   user_id: string;
+  items: Device[];
+};
+
+export type UpdateFavoriteDto = {
   items: Device[];
 };
