@@ -14,7 +14,7 @@ export const findDevice = async (id: string) => {
   const device = await Device.findById(id);
   if (!device)
     throw new RequestError(
-      'Error: can not find device by id',
+      `Error: can not find device by id ${id}`,
       StatusCodes.NOT_FOUND,
     );
   return device;
@@ -27,9 +27,11 @@ export const findAllDevices = async () => {
 export const updateDevice = async (id: string, device_dto: any) => {
   const device = await Device.findById(id);
   if (!device) {
-    throw new RequestError('Error: Device whith such id not found', 404);
+    throw new RequestError(
+      `Error: can not find device by id ${id}`,
+      StatusCodes.NOT_FOUND,
+    );
   }
-
   await Device.findByIdAndUpdate(id, { ...device_dto });
   return await Device.findById(id);
 };
@@ -44,7 +46,7 @@ export const deleteDevice = async (id: string) => {
   const device = await Device.findById(id);
   if (!device) {
     throw new RequestError(
-      'Error while delete device: no device with such id',
+      `Error: can not find device by id ${id}`,
       StatusCodes.NOT_FOUND,
     );
   }

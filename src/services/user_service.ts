@@ -1,24 +1,35 @@
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import { User } from '../shemas/user_schema';
 import { RequestError } from '../static/utils';
 import { CreateUserDto, UpdateUserDto } from '../types';
-import mongoose from 'mongoose';
+
 import { createFavorite, deleteFavorite } from './favorite_service';
+import { encryptPassword } from '../static/hash.helpers';
 
 export const createUser = async (data: CreateUserDto) => {
-  const newUser = new User(data);
+  const exist = await User.findOne({ email: data.email });
+  if (exist)
+    throw new RequestError(
+      'User with this email already exists',
+      StatusCodes.BAD_REQUEST,
+    );
+  const hash_password = encryptPassword(data.password);
+  const newUser = new User({ ...data, password: hash_password });
   await newUser.save();
   const newFav = await createFavorite(newUser._id);
   if (newFav) {
     await updateUser(newUser._id, { favourites_id: newFav._id });
   }
-  return newUser;
+  return 'The user has been successfully created';
 };
 
 export const findUserByEmail = async (email: string) => {
   if (!email)
     throw new RequestError('Error: email is missing', StatusCodes.BAD_REQUEST);
-  const user = await User.findOne({ email }).select('-password');
+  const user = await User.findOne({ email });
 
   if (!user)
     throw new RequestError(
