@@ -2,29 +2,21 @@ import mongoose, { ObjectId, Schema } from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
 import { RequestError } from '../static/utils';
 import { Favorite } from '../shemas/favorite_schema';
-import { Device, DeviceSchema } from '../shemas/device_schema';
+import { Device } from '../shemas/device_schema';
 
 export const createFavorite = async (user_id: mongoose.Types.ObjectId) => {
-  try {
-    if (!user_id) {
-      throw new RequestError('Error: can not create user favorites', 404);
-    }
-    const newFavorite = new Favorite({
-      user_id,
-      items: [],
-    });
-    newFavorite
-      .save()
-      .then(() => console.log('favorite saved '))
-      .catch((err) => console.log(err));
-    // Favorite.create(newFavorite);
-    // newFavorite.save().then(() => console.log('Saved new user`s favorite'));
-    return newFavorite;
-
-    // const user_id = req.body.user_id;
-  } catch (err) {
-    console.log(err);
+  if (!user_id) {
+    throw new RequestError(
+      'Error: can not create user`s favorites - user_id is missing',
+      404,
+    );
   }
+  const newFavorite = new Favorite({
+    user_id,
+    items: [],
+  });
+  newFavorite.save();
+  return newFavorite;
 };
 
 export const findFavoriteById = async (id: string) => {
@@ -33,7 +25,7 @@ export const findFavoriteById = async (id: string) => {
   const favorite = await Favorite.findById(id);
   if (!favorite)
     throw new RequestError(
-      'Error: can not find user by id',
+      `Error: can not find favorite by id ${id}`,
       StatusCodes.NOT_FOUND,
     );
   return favorite;
@@ -55,8 +47,7 @@ export const findFavoriteByUserId = async (user_id: string) => {
 };
 
 export const findAllFavorites = async () => {
-  const users = await Favorite.find();
-  return users;
+  return await Favorite.find();
 };
 export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
   if (!id || !device_id) {
@@ -90,8 +81,7 @@ export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
   }
   await Favorite.updateOne({ _id: id }, { ...users_favorite });
 
-  const updated_favorite = await Favorite.findById(id);
-  return updated_favorite;
+  return await Favorite.findById(id);
 };
 
 // export const updateFavoriteByUserId = async (

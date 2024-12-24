@@ -3,15 +3,6 @@ import { Device } from '../shemas/device_schema';
 import { RequestError } from '../static/utils';
 
 export const createDevice = async (device: any) => {
-  //   if (
-  //     !device ||
-  //     !device.article_number ||
-  //     !device.currency ||
-  //     !device.name ||
-  //     !device.type ||
-  //     !device.price
-  //   )
-  //     throw new RequestError('Error: can not create device', 404);
   const new_device = new Device(device);
   await Device.create(new_device);
   return new_device;
@@ -30,25 +21,17 @@ export const findDevice = async (id: string) => {
 };
 
 export const findAllDevices = async () => {
-  const devices = await Device.find();
-  return devices;
+  return await Device.find();
 };
 
 export const updateDevice = async (id: string, device_dto: any) => {
-  // if (!device_dto) {
-  //   throw new RequestError(
-  //     'Error: Device whith such id not found',
-  //     StatusCodes.BAD_REQUEST,
-  //   );
-  // }
   const device = await Device.findById(id);
   if (!device) {
     throw new RequestError('Error: Device whith such id not found', 404);
   }
 
   await Device.findByIdAndUpdate(id, { ...device_dto });
-  const updated_device = await Device.findById(id);
-  return updated_device;
+  return await Device.findById(id);
 };
 
 export const deleteDevice = async (id: string) => {

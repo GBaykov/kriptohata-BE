@@ -1,6 +1,5 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { Device, Favorite } from '../types';
-import { handleErrors, RequestError } from '../static/utils';
+import { Request, Response, NextFunction } from 'express';
+import { handleErrors } from '../static/utils';
 
 import {
   createFavorite,
@@ -8,10 +7,8 @@ import {
   findAllFavorites,
   findFavoriteById,
   updateFavoriteById,
-  //   updateFavoriteByUserId,
 } from '../services/favorite_service';
 import { StatusCodes } from 'http-status-codes';
-import { json } from 'body-parser';
 
 class FavoritesController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -19,9 +16,8 @@ class FavoritesController {
       const user_id = req.body.user_id;
       const favorite = await createFavorite(user_id);
       res.status(StatusCodes.CREATED).json(favorite);
-    } catch (err) {
-      const error = err as RequestError;
-      handleErrors(error, req, res, next);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 
@@ -29,9 +25,8 @@ class FavoritesController {
     try {
       const favorites = findAllFavorites();
       res.status(StatusCodes.OK).json(favorites);
-    } catch (err) {
-      const error = err as RequestError;
-      handleErrors(error, req, res, next);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 
@@ -40,9 +35,8 @@ class FavoritesController {
       const { id } = req.params;
       const favorite = await findFavoriteById(id);
       res.status(200).json(favorite);
-    } catch (err) {
-      const error = err as RequestError;
-      handleErrors(error, req, res, next);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 
@@ -63,9 +57,8 @@ class FavoritesController {
       const device_id = req.body;
       const favorite = updateFavoriteById(id, device_id);
       res.status(StatusCodes.OK).json(favorite);
-    } catch (err) {
-      const error = err as RequestError;
-      handleErrors(error, req, res, next);
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 
@@ -73,10 +66,9 @@ class FavoritesController {
     try {
       const { id } = req.params;
       await deleteFavorite(id);
-      res.status(StatusCodes.NO_CONTENT).json('favorite has been deleted');
-    } catch (err) {
-      const error = err as RequestError;
-      handleErrors(error, req, res, next);
+      res.status(StatusCodes.NO_CONTENT).json('Favorite has been deleted');
+    } catch (err: unknown) {
+      handleErrors;
     }
   }
 }

@@ -30,6 +30,7 @@ app.use(handleErrors);
 
 process.on('uncaughtException', (err) => {
   setTimeout(() => process.exit(1), 1000);
+  console.error({ status: 500, error: 'Internal Server Error' });
 });
 
 const start = async () => {

@@ -26,7 +26,7 @@ export const findOrderByUserId = async (user_id: string) => {
       'Error: user_id is missing',
       StatusCodes.BAD_REQUEST,
     );
-  const order = await Order.findOne({ user_id: user_id });
+  const order = await Order.findOne({ user_id });
   if (!order)
     throw new RequestError(
       'Error: can not find order by id',
@@ -36,25 +36,17 @@ export const findOrderByUserId = async (user_id: string) => {
 };
 
 export const findAllOrders = async () => {
-  const orders = await Order.find();
-  return orders;
+  return await Order.find();
 };
 
 export const updateOrder = async (id: string, order_dto: any) => {
-  // if (!device_dto) {
-  //   throw new RequestError(
-  //     'Error: Device whith such id not found',
-  //     StatusCodes.BAD_REQUEST,
-  //   );
-  // }
   const order = await Order.findById(id);
   if (!order) {
     throw new RequestError('Error: order whith such id not found', 404);
   }
 
   await Order.findByIdAndUpdate(id, { ...order_dto });
-  const updated_order = await Order.findById(id);
-  return updated_order;
+  return await Order.findById(id);
 };
 
 export const deleteOrder = async (id: string) => {
