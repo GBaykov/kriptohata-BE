@@ -50,7 +50,6 @@ class UserController {
   getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await findAllUsers();
-      console.log(users);
       res.status(StatusCodes.OK).json(users);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);

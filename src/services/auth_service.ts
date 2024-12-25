@@ -17,9 +17,6 @@ const PATHS_WITHOUT_AUTH = [
 ];
 
 const checkToken = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('req.url', req.url);
-  console.log('req.method', req.method);
-
   if (
     !PATHS_WITHOUT_AUTH.includes(req.url) &&
     !(req.url.includes('/orders/') && req.method === 'POST')
@@ -35,10 +32,8 @@ const checkToken = async (req: Request, res: Response, next: NextFunction) => {
         try {
           const resp: string | JwtPayload = <JwtPayload>(
             Jwt.verify(token, JWT_SECRET_KEY)
-          ); // <JwtPayload>
-          console.log('resp', resp);
+          );
           const user = await findUserById(resp._id);
-          console.log(user);
           if (!user || user?.email !== resp.email) {
             throw new RequestError('Unauthorized', StatusCodes.UNAUTHORIZED);
           } else {

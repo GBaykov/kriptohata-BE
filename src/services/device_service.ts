@@ -11,7 +11,7 @@ export const createDevice = async (device: any) => {
 export const findDevice = async (id: string) => {
   if (!id)
     throw new RequestError('Error: id is missing', StatusCodes.BAD_REQUEST);
-  const device = await Device.findById(id);
+  const device = await Device.findById(id).populate('device_features');
   if (!device)
     throw new RequestError(
       `Error: can not find device by id ${id}`,

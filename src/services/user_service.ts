@@ -11,7 +11,6 @@ import { encryptPassword } from '../static/hash.helpers';
 
 export const createUser = async (data: CreateUserDto) => {
   const exist = await User.findOne({ email: data.email });
-  console.log('14', exist);
   if (exist !== null)
     throw new RequestError(
       'User with this email already exists',

@@ -1,33 +1,44 @@
 import mongoose, { Schema } from 'mongoose';
 
+// export type Videocard = {
+//   id: string;
+//   type: DeviceType.Videocard;
+//   name: string;
+//   price: number;
+//   exists: ExistType;
+//   article_number: string;
+//   img: string;
+//   currency: {
+//     name: string;
+//     short_name: string;
+//   }[];
+//   memory: string[];
+//   manufacturer: string;
+// };
+
+// export type Miner = {
+//   id: string;
+//   type: DeviceType.OldMiner | DeviceType.NewMiner;
+//   name: string;
+//   price: number;
+//   exists: ExistType;
+//   article_number: string;
+//   img: string;
+//   currency: {
+//     name: string;
+//     short_name: string;
+//   }[];
+//   energy_consumption: number;
+//   hash_power: number;
+//   hash_algorithm: string;
+// };
 export type Videocard = {
-  id: string;
   type: DeviceType.Videocard;
-  name: string;
-  price: number;
-  exists: ExistType;
-  article_number: string;
-  img: string;
-  currency: {
-    name: string;
-    short_name: string;
-  }[];
   memory: string[];
   manufacturer: string;
 };
-
 export type Miner = {
-  id: string;
   type: DeviceType.OldMiner | DeviceType.NewMiner;
-  name: string;
-  price: number;
-  exists: ExistType;
-  article_number: string;
-  img: string;
-  currency: {
-    name: string;
-    short_name: string;
-  }[];
   energy_consumption: number;
   hash_power: number;
   hash_algorithm: string;
@@ -44,7 +55,36 @@ export enum ExistType {
   notExist = 'notExist',
 }
 
-export type Device = Videocard | Miner;
+// export type Device = Videocard | Miner;
+export type Device = {
+  _id: mongoose.Types.ObjectId | string;
+  name: string;
+  price: number;
+  exists: ExistType;
+  article_number: string;
+  img: string;
+  currency: {
+    name: string;
+    short_name: string;
+  }[];
+  device_type: DeviceType;
+  device_features: Miner | Videocard;
+};
+
+export type CreateDeviceDto = {
+  name: string;
+  price: number;
+  exists: ExistType;
+  article_number: string;
+  img: string;
+  currency: {
+    name: string;
+    short_name: string;
+  }[];
+  device_type: DeviceType;
+  device_features: Miner | Videocard;
+};
+
 export type UserRole = 'Admin' | 'Customer';
 
 export type User = {

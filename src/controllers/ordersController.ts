@@ -7,7 +7,7 @@ import {
   createOrder,
   deleteOrder,
   findAllOrders,
-  findOrderByUserId,
+  findOrdersByUserId,
 } from '../services/order_service';
 
 class OrdersController {
@@ -30,10 +30,10 @@ class OrdersController {
     }
   }
 
-  async getOneByUserId(req: Request, res: Response, next: NextFunction) {
+  async getByUserId(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const order = findOrderByUserId(id);
+      const order = findOrdersByUserId(id);
       res.status(StatusCodes.OK).json(order);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);
