@@ -19,7 +19,7 @@ class CallBacksController {
       const callback = await createCallback(callback_dto);
       res.status(StatusCodes.CREATED).json(callback);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -30,7 +30,7 @@ class CallBacksController {
 
       res.status(StatusCodes.OK).json(callbacks);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -40,7 +40,7 @@ class CallBacksController {
       const callback = await findCallback(id);
       res.status(StatusCodes.OK).json(callback);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -50,7 +50,7 @@ class CallBacksController {
       await deleteCallback(id);
       res.status(StatusCodes.NO_CONTENT);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -59,7 +59,7 @@ class CallBacksController {
       await deleteAllCallbacks();
       res.status(StatusCodes.NO_CONTENT);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 }

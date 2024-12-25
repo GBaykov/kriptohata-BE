@@ -16,7 +16,7 @@ class DeviceController {
       const new_device = await createDevice(device);
       res.status(StatusCodes.CREATED).json(new_device);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -25,7 +25,7 @@ class DeviceController {
       const devices = await findAllDevices();
       res.status(StatusCodes.OK).json(devices);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -35,7 +35,7 @@ class DeviceController {
       const device = await findDevice(id);
       res.status(StatusCodes.OK).json(device);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -46,7 +46,7 @@ class DeviceController {
       const updated_device = await updateDevice(id, device_dto);
       res.status(StatusCodes.OK).json(updated_device);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -56,7 +56,7 @@ class DeviceController {
       await deleteDevice(id);
       res.status(StatusCodes.NO_CONTENT).json('device successfully deleted');
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 }

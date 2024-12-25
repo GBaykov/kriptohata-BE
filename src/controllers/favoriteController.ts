@@ -17,7 +17,7 @@ class FavoritesController {
       const favorite = await createFavorite(user_id);
       res.status(StatusCodes.CREATED).json(favorite);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -26,7 +26,7 @@ class FavoritesController {
       const favorites = findAllFavorites();
       res.status(StatusCodes.OK).json(favorites);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -36,7 +36,7 @@ class FavoritesController {
       const favorite = await findFavoriteById(id);
       res.status(200).json(favorite);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -58,7 +58,7 @@ class FavoritesController {
       const favorite = updateFavoriteById(id, device_id);
       res.status(StatusCodes.OK).json(favorite);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -68,7 +68,7 @@ class FavoritesController {
       await deleteFavorite(id);
       res.status(StatusCodes.NO_CONTENT).json('Favorite has been deleted');
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 }

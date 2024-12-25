@@ -29,9 +29,12 @@ export function handleErrors(
         .status(StatusCodes.BAD_REQUEST)
         .json({ name: err.name, message: err.message });
       next();
+    } else if (err instanceof RequestError) {
+      res.status(err.status).json(err.message);
+      next();
     }
-  } else if (err instanceof RequestError) {
-    res.status(err.status).json(err.message);
+  } else {
+    return res.status(500).json({ message: 'Unexpected error' });
     next();
-  } else return res.status(500).json({ message: 'Unexpected error' });
+  }
 }

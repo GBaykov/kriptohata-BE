@@ -24,7 +24,7 @@ class AuthController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
-      const data = signToken(email, password);
+      const data = await signToken(email, password);
       return res.status(StatusCodes.OK).json(data);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);

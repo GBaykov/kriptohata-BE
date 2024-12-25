@@ -11,13 +11,16 @@ import { encryptPassword } from '../static/hash.helpers';
 
 export const createUser = async (data: CreateUserDto) => {
   const exist = await User.findOne({ email: data.email });
-  if (exist)
+  console.log('14', exist);
+  if (exist !== null)
     throw new RequestError(
       'User with this email already exists',
       StatusCodes.BAD_REQUEST,
     );
-  const hash_password = encryptPassword(data.password);
+  const hash_password = await encryptPassword(data.password);
+
   const newUser = new User({ ...data, password: hash_password });
+
   await newUser.save();
   const newFav = await createFavorite(newUser._id);
   if (newFav) {

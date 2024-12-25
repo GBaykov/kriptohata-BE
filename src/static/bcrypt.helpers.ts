@@ -23,7 +23,7 @@ export const signToken = async (provided_email: string, password: string) => {
   const { _id, email } = user;
   if (!JWT_SECRET_KEY) throw new Error('JWT_SECRET_KEY is undefined');
   const token = Jwt.sign({ _id, email }, JWT_SECRET_KEY);
-  return {
+  const result = {
     token,
     user: {
       email,
@@ -34,4 +34,6 @@ export const signToken = async (provided_email: string, password: string) => {
       favorites_id: user.favourites_id,
     },
   };
+
+  return result;
 };

@@ -43,7 +43,7 @@ class UserController {
       const user = await findUserById(id);
       return res.status(StatusCodes.OK).json(user);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   };
 
@@ -53,7 +53,7 @@ class UserController {
       console.log(users);
       res.status(StatusCodes.OK).json(users);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   };
 
@@ -64,7 +64,7 @@ class UserController {
       const user = await updateUser(id, data);
       res.status(StatusCodes.OK).json(user);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -76,7 +76,7 @@ class UserController {
         .status(StatusCodes.NO_CONTENT)
         .json('Success while delete user');
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 }

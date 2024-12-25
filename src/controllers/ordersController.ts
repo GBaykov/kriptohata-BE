@@ -17,7 +17,7 @@ class OrdersController {
       const new_order = createOrder(order);
       res.status(StatusCodes.CREATED).json(new_order);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -26,7 +26,7 @@ class OrdersController {
       const orders = await findAllOrders();
       res.status(StatusCodes.OK).json(orders);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -36,7 +36,7 @@ class OrdersController {
       const order = findOrderByUserId(id);
       res.status(StatusCodes.OK).json(order);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 
@@ -56,7 +56,7 @@ class OrdersController {
   //       await DB.devices.splice(index, 1, device);
   //       res.status(201).json(device);
   //     } catch (err) {
-  //       next(err);
+  //        handleErrors(err, req, res, next);
   //     }
   //   }
 
@@ -66,7 +66,7 @@ class OrdersController {
       await deleteOrder(id);
       res.status(StatusCodes.NO_CONTENT);
     } catch (err: unknown) {
-      handleErrors;
+      handleErrors(err, req, res, next);
     }
   }
 }
