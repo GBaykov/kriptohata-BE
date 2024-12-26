@@ -14,7 +14,8 @@ class OrdersController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
       const order = req.body;
-      const new_order = createOrder(order);
+      const new_order = await createOrder(order);
+      console.log(new_order, 18);
       res.status(StatusCodes.CREATED).json(new_order);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);
@@ -33,7 +34,7 @@ class OrdersController {
   async getByUserId(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const order = findOrdersByUserId(id);
+      const order = await findOrdersByUserId(id);
       res.status(StatusCodes.OK).json(order);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);

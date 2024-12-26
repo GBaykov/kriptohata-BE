@@ -1,11 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 import { RequestError } from '../static/utils';
 import { Callback } from '../shemas/callback_schema';
+import { CreateCallBackDto } from '../types';
 
-export const createCallback = async (callback_dto: any) => {
-  const new_order = new Callback(callback_dto);
-  await Callback.create(new_order);
-  return new_order;
+export const createCallback = async (callback_dto: CreateCallBackDto) => {
+  const new_callback = new Callback(callback_dto);
+  await Callback.create(new_callback);
+  return new_callback;
 };
 
 export const findCallback = async (id: string) => {

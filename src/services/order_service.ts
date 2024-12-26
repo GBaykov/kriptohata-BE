@@ -4,7 +4,7 @@ import { RequestError } from '../static/utils';
 import { CreateOrderDto, UpdateOrderDto } from '../types';
 
 export const createOrder = async (order: CreateOrderDto) => {
-  const new_order = new Order(order);
+  const new_order = await new Order(order);
   await Order.create(new_order);
   return new_order;
 };

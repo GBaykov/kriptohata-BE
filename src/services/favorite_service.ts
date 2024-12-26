@@ -15,7 +15,7 @@ export const createFavorite = async (user_id: mongoose.Types.ObjectId) => {
     user_id,
     items: [],
   });
-  newFavorite.save();
+  await newFavorite.save();
   return newFavorite;
 };
 
@@ -64,7 +64,7 @@ export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
       StatusCodes.NOT_FOUND,
     );
   }
-  const device = Device.find({ _id: device_id });
+  const device = await Device.find({ _id: device_id });
   if (!device)
     throw new RequestError(
       'Error in updateFavorite: no device with such device_id',

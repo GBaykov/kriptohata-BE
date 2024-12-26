@@ -14,4 +14,5 @@ export const config = {
   MONGO_PROD_URL: process.env.MONGO_PROD_URL,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
 };
-export const { JWT_SECRET_KEY, AUTH_MODE } = process.env;
+
+export const { JWT_SECRET_KEY, AUTH_MODE, LOG_LVL, NODE_ENV } = process.env;

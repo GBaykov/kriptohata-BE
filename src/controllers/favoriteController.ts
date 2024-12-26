@@ -23,7 +23,7 @@ class FavoritesController {
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const favorites = findAllFavorites();
+      const favorites = await findAllFavorites();
       res.status(StatusCodes.OK).json(favorites);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);
@@ -55,7 +55,7 @@ class FavoritesController {
     try {
       const { id } = req.params;
       const device_id = req.body;
-      const favorite = updateFavoriteById(id, device_id);
+      const favorite = await updateFavoriteById(id, device_id);
       res.status(StatusCodes.OK).json(favorite);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);

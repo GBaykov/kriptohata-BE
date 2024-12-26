@@ -3,11 +3,11 @@ import mongoose, { Schema } from 'mongoose';
 export const CallbackSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Имя не может быть пустым'],
+    required: true,
   },
   tel: {
     type: String,
-    requred: [true, 'tel не может быть пустым'],
+    requred: true,
   },
 });
 

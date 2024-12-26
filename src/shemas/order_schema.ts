@@ -10,15 +10,15 @@ export const OrderSchema = new mongoose.Schema({
   },
   user_name: {
     type: String,
-    requred: [true, 'user_name не может быть пустым'],
+    required: true,
   },
   user_tel: {
     type: String,
-    requred: [true, 'user_tel не может быть пустым'],
+    required: true,
   },
   items: {
     type: [DeviceSchema],
-    requred: [true, 'items не может быть пустым'],
+    required: true,
   },
 });
 

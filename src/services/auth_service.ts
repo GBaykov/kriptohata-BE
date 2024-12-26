@@ -12,17 +12,23 @@ const PATHS_WITHOUT_AUTH = [
   '/doc',
   '/',
   '/api',
-  '/api/callbacks',
-  '/api/devices',
 ];
 
-const checkToken = async (req: Request, res: Response, next: NextFunction) => {
-  if (
-    !PATHS_WITHOUT_AUTH.includes(req.url) &&
-    !(req.url.includes('/orders/') && req.method === 'POST')
-  ) {
-    const tokenString = req.header('Authorization');
+const isAuthUrl = (req: Request) => {
+  if (PATHS_WITHOUT_AUTH.includes(req.url)) return false;
+  if (req.url.includes('/api/callbacks') && req.method === 'POST') return false;
+  if (req.url.includes('/api/orders') && req.method === 'POST') return false;
+  if (req.url.includes('/api/devices') && req.method === 'GET') return false;
 
+  return true;
+};
+
+const checkToken = async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.url, 20);
+  console.log(req.baseUrl, 21);
+  const isAuth = isAuthUrl(req);
+  if (isAuth) {
+    const tokenString = req.header('Authorization');
     if (tokenString) {
       const [type, token] = tokenString.split(' ');
       if (type !== 'Bearer') {
