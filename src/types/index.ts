@@ -1,43 +1,11 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
-// export type Videocard = {
-//   id: string;
-//   type: DeviceType.Videocard;
-//   name: string;
-//   price: number;
-//   exists: ExistType;
-//   article_number: string;
-//   img: string;
-//   currency: {
-//     name: string;
-//     short_name: string;
-//   }[];
-//   memory: string[];
-//   manufacturer: string;
-// };
-
-// export type Miner = {
-//   id: string;
-//   type: DeviceType.OldMiner | DeviceType.NewMiner;
-//   name: string;
-//   price: number;
-//   exists: ExistType;
-//   article_number: string;
-//   img: string;
-//   currency: {
-//     name: string;
-//     short_name: string;
-//   }[];
-//   energy_consumption: number;
-//   hash_power: number;
-//   hash_algorithm: string;
-// };
-export type Videocard = {
+export type VideocardType = {
   type: DeviceType.Videocard;
   memory: string[];
   manufacturer: string;
 };
-export type Miner = {
+export type MinerType = {
   type: DeviceType.OldMiner | DeviceType.NewMiner;
   energy_consumption: number;
   hash_power: number;
@@ -55,7 +23,6 @@ export enum ExistType {
   notExist = 'notExist',
 }
 
-// export type Device = Videocard | Miner;
 export type Device = {
   _id: mongoose.Types.ObjectId | string;
   name: string;
@@ -68,7 +35,11 @@ export type Device = {
     short_name: string;
   }[];
   device_type: DeviceType;
-  device_features: Miner | Videocard;
+  memory: string[];
+  manufacturer: string;
+  energy_consumption: number;
+  hash_power: number;
+  hash_algorithm: string;
 };
 
 export type CreateDeviceDto = {
@@ -82,7 +53,11 @@ export type CreateDeviceDto = {
     short_name: string;
   }[];
   device_type: DeviceType;
-  device_features: Miner | Videocard;
+  memory: string[];
+  manufacturer: string;
+  energy_consumption: number;
+  hash_power: number;
+  hash_algorithm: string;
 };
 
 export type UserRole = 'Admin' | 'Customer';

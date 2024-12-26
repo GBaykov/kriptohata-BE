@@ -1,6 +1,5 @@
-import mongoose, { Schema } from 'mongoose';
-import { MinerMongSchema, VideocardMongoSchema } from './device_schema';
-// import { DeviceSchema } from './device_schema';
+import mongoose from 'mongoose';
+import { DeviceSchema } from './device_schema';
 
 export const OrderSchema = new mongoose.Schema({
   user_id: String,
@@ -18,7 +17,7 @@ export const OrderSchema = new mongoose.Schema({
     requred: [true, 'user_tel не может быть пустым'],
   },
   items: {
-    type: [MinerMongSchema || VideocardMongoSchema],
+    type: [DeviceSchema],
     requred: [true, 'items не может быть пустым'],
   },
 });

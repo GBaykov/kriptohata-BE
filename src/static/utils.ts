@@ -20,21 +20,23 @@ export function handleErrors(
 ) {
   if (err instanceof Error) {
     if (
-      err.name === 'ValidationError' ||
-      err.name === 'CastError' ||
-      err.name === 'DuplicateKeyError' ||
-      err.name === 'MongoServerError'
+      [
+        'ValidationError',
+        'CastError',
+        'DuplicateKeyError',
+        'MongoServerError',
+      ].includes(err.name)
     ) {
       res
         .status(StatusCodes.BAD_REQUEST)
         .json({ name: err.name, message: err.message });
-      next();
     } else if (err instanceof RequestError) {
       res.status(err.status).json(err.message);
-      next();
+    } else {
+      res.status(404).json({ name: err.name, message: err.message });
     }
   } else {
-    return res.status(500).json({ message: 'Unexpected error' });
-    next();
+    res.status(500).json({ message: 'Unexpected error' });
   }
+  next();
 }
