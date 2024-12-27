@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { handleErrors } from '../static/utils';
-
 import {
   createFavorite,
   deleteFavorite,
@@ -8,7 +8,6 @@ import {
   findFavoriteById,
   updateFavoriteById,
 } from '../services/favorite_service';
-import { StatusCodes } from 'http-status-codes';
 
 class FavoritesController {
   async create(req: Request, res: Response, next: NextFunction) {
@@ -39,17 +38,6 @@ class FavoritesController {
       handleErrors(err, req, res, next);
     }
   }
-
-  // async getOneByUserId(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const { id } = req.params;
-  //     const favorite = await DB.favorites.find((item) => item.user_id === id);
-  //     if (!favorite || !id) throw new Error("NOO favorite or user_id");
-  //     res.status(200).json(favorite);
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // }
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {

@@ -3,14 +3,14 @@ import mongoose, { Schema } from 'mongoose';
 export const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    minLength: [2, 'name слишком короткое'],
-    maxLength: [12, 'name слишком длинное'],
-    required: [true, 'name не может быть пустым'],
+    minLength: 2,
+    maxLength: 12,
+    required: true,
   },
   email: {
     type: String,
-    match: [/\w+@\w+\.\w+/, 'Неправильный адрес электронной почты'],
-    required: [true, 'Email не может быть пустым'],
+    match: [/\w+@\w+\.\w+/, 'Incorrect email address format'],
+    required: true,
     unique: true,
   },
   password: {
@@ -19,14 +19,13 @@ export const UserSchema = new mongoose.Schema({
   },
   tel: {
     type: String,
-    required: [true, 'tel не может быть пустым'],
-    // unique: true,
+    required: true,
+    unique: true,
   },
   role: {
     type: String,
     enum: ['Admin', 'Customer'],
   },
-  // favourites_id: Schema.Types.ObjectId,
   favourites_id: {
     type: Schema.Types.ObjectId,
     ref: 'Favorite',

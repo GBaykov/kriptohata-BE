@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 import path from 'path';
-// import { config as dotenv_config } from 'dotenv';
-// dotenv_config();
 
 dotenv.config({
   path: path.join(__dirname, '../../.env'),
@@ -15,4 +13,18 @@ export const config = {
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
 };
 
-export const { JWT_SECRET_KEY, AUTH_MODE, LOG_LVL, NODE_ENV } = process.env;
+export const {
+  JWT_SECRET_KEY,
+  AUTH_MODE,
+  LOG_LVL,
+  NODE_ENV,
+  ADMIN_NAME,
+  ADMIN_PASSWORD,
+  ADMIN_TEL,
+  ADMIN_EMAIL,
+  PORT,
+  MONGO_DEV_URL,
+  MONGO_NAME,
+  MONGO_PASSWORD,
+  MONGO_APP_NAME,
+} = process.env;

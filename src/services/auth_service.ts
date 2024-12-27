@@ -1,5 +1,5 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
-import Jwt, { GetPublicKeyOrSecret, JwtPayload, Secret } from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import Jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { JWT_SECRET_KEY } from '../common/config';
 import { StatusCodes } from 'http-status-codes';
@@ -24,8 +24,6 @@ const isAuthUrl = (req: Request) => {
 };
 
 const checkToken = async (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.url, 20);
-  console.log(req.baseUrl, 21);
   const isAuth = isAuthUrl(req);
   if (isAuth) {
     const tokenString = req.header('Authorization');
@@ -53,7 +51,6 @@ const checkToken = async (req: Request, res: Response, next: NextFunction) => {
       res.status(401).send('Unauthorized');
     }
   } else {
-    console.log(req.url);
     next();
   }
 };

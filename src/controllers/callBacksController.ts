@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { v4 as uuid } from 'uuid';
-
-import { handleErrors, RequestError } from '../static/utils';
+import { StatusCodes } from 'http-status-codes';
+import { handleErrors } from '../static/utils';
 import {
   createCallback,
   deleteAllCallbacks,
@@ -9,7 +8,6 @@ import {
   findAllCallbacks,
   findCallback,
 } from '../services/callback_service';
-import { StatusCodes } from 'http-status-codes';
 
 class CallBacksController {
   async create(req: Request, res: Response, next: NextFunction) {

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { handleErrors } from '../static/utils';
 import { StatusCodes } from 'http-status-codes';
+import { handleErrors } from '../static/utils';
+
 import {
   createDevice,
   deleteDevice,

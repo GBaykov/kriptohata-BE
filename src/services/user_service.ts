@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import { User } from '../shemas/user_schema';
 import { RequestError } from '../static/utils';

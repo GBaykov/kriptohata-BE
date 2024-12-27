@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-
-import { handleErrors } from '../static/utils';
-
 import { StatusCodes } from 'http-status-codes';
+import { handleErrors } from '../static/utils';
 import {
   createOrder,
   deleteOrder,
@@ -15,7 +13,6 @@ class OrdersController {
     try {
       const order = req.body;
       const new_order = await createOrder(order);
-      console.log(new_order, 18);
       res.status(StatusCodes.CREATED).json(new_order);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);
@@ -40,26 +37,6 @@ class OrdersController {
       handleErrors(err, req, res, next);
     }
   }
-
-  //   async update(req: Request, res: Response, next: NextFunction) {
-  //     try {
-  //       const { id } = req.params;
-  //       const device: Device = req.body;
-  //       const index = await DB.devices.findIndex((item) => item.id === id);
-
-  //       device.id === id;
-  //       if (!device || index === -1) {
-  //         throw new RequestError(
-  //           "Error in updat Favorites: no favorite with such user_id",
-  //           404
-  //         );
-  //       }
-  //       await DB.devices.splice(index, 1, device);
-  //       res.status(201).json(device);
-  //     } catch (err) {
-  //        handleErrors(err, req, res, next);
-  //     }
-  //   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {

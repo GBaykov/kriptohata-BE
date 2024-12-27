@@ -1,5 +1,3 @@
-import { Request, Response, NextFunction } from 'express';
-
 import winston, { createLogger } from 'winston';
 import appRoot from 'app-root-path';
 import { LOG_LVL, NODE_ENV } from '../common/config';
@@ -36,15 +34,11 @@ const format = winston.format.combine(
 );
 
 const transports = [
-  // Allow the use the console to print the messages
   new winston.transports.Console(),
-  // Allow to print all the error level messages inside the error.log file
   new winston.transports.File({
     filename: `${appRoot}/logs/errors.log`,
     level: 'error',
   }),
-  // Allow to print all the error message inside the all.log file
-  // (also the error log that are also printed inside the error.log(
   new winston.transports.File({ filename: `${appRoot}/logs/combined.log` }),
 ];
 

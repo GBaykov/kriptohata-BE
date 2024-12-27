@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { createUser } from '../services/user_service';
 import { handleErrors } from '../static/utils';
-import { StatusCodes } from 'http-status-codes';
 import { signToken } from '../static/bcrypt.helpers';
 
 class AuthController {
