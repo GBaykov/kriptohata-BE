@@ -1,3 +1,10 @@
+.git
+.vscode
+node_modules
+dist
+docker
+.history
+
 # Logs
 logs
 *.log
