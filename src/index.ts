@@ -27,7 +27,7 @@ app.use('/api', router);
 
 app.use(AppArrorHandler);
 
-const start = async () => {
+export const start = async () => {
   try {
     mongoose
       .connect(MONGO_URL, {} as ConnectOptions)
