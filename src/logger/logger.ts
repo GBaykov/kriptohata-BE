@@ -55,16 +55,3 @@ const Logger = createLogger({
   transports,
 });
 export default Logger;
-
-// export async function logging(req: Request, res: Response, next: NextFunction) {
-//   const { url } = req;
-//   const params = JSON.stringify(req.params);
-//   const body = JSON.stringify(req.body);
-//   const query: string = JSON.stringify(req.query);
-//   const statusCode: number = await res.statusCode;
-//   const header = JSON.stringify(req.headers);
-//   const log = 'info';
-//   // console.log(JSON.stringify(appRoot))
-//   const message = `[method = ${req.method}] -:- url:${url} - body:${body} -HEADER${header} `;
-//   logger.log(log, message);
-// }

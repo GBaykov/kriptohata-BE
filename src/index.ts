@@ -1,15 +1,16 @@
-import express, { Request, Response } from 'express';
-
-// import * as models from "./models/models";
+import express from 'express';
 import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import router from './routes';
 import path from 'path';
 import mongoose, { ConnectOptions } from 'mongoose';
-import { handleErrors, RequestError } from './static/utils';
+
 import { AUTH_MODE, config } from './common/config';
 import checkToken from './services/auth_service';
-import morganMiddleware from './middleware/morganLogger';
+import morganMiddleware, {
+  AppArrorHandler,
+  loggingErrors,
+} from './middleware/morganLogger';
 const { PORT, MONGO_DEV_URL } = config;
 
 const app = express();
@@ -22,12 +23,7 @@ app.use(morganMiddleware);
 if (AUTH_MODE) app.use(checkToken);
 app.use('/api', router);
 
-app.use(handleErrors);
-
-process.on('uncaughtException', (err) => {
-  setTimeout(() => process.exit(1), 1000);
-  console.error({ status: 500, error: 'Internal Server Error' });
-});
+app.use(AppArrorHandler);
 
 const start = async () => {
   try {
@@ -39,15 +35,26 @@ const start = async () => {
           console.log(`server start on http://localhost:${PORT}`);
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => loggingErrors(err));
 
     mongoose.connection.on('error', (err) => {
-      handleErrors;
-      console.log(err);
+      loggingErrors(err);
     });
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    loggingErrors(err as Error);
   }
 };
-
 start();
+
+process.on('uncaughtException', (err) => {
+  loggingErrors(err);
+  setTimeout(() => process.exit(1), 1000);
+});
+// throw Error('Oops!');
+
+process.on('unhandledRejection', (err: Error) => {
+  loggingErrors(err);
+  setTimeout(() => process.exit(1), 1000);
+});
+
+// Promise.reject(Error('Oops!'));
