@@ -5,7 +5,7 @@ import { RequestError } from '../static/utils';
 import { CreateUserDto, UpdateUserDto } from '../types';
 
 import { createFavorite, deleteFavorite } from './favorite_service';
-import { encryptPassword } from '../static/hash.helpers';
+import { checkHashPassword, encryptPassword } from '../static/hash.helpers';
 
 export const createUser = async (data: CreateUserDto) => {
   const exist = await User.findOne({ email: data.email });
@@ -73,8 +73,24 @@ export const updateUser = async (
       StatusCodes.NOT_FOUND,
     );
   }
+  const { password, new_password, ...rest_user_dto } = update_user_dto;
+  if (password && new_password) {
+    const match = await checkHashPassword(password, user.password);
+    if (!match) {
+      throw new RequestError(
+        'Error: Incorrect password',
+        StatusCodes.UNAUTHORIZED,
+      );
+    }
+    const hash_password = await encryptPassword(new_password);
+    await User.updateOne(
+      { _id: id },
+      { password: hash_password, ...rest_user_dto },
+    );
+  } else {
+    await User.updateOne({ _id: id }, { ...update_user_dto });
+  }
 
-  await User.updateOne({ _id: id }, { ...update_user_dto });
   return await User.findById(id).select('-password');
 };
 

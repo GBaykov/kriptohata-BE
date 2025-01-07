@@ -21,7 +21,7 @@ export const signToken = async (provided_email: string, password: string) => {
   }
   const { _id, email } = user;
   if (!JWT_SECRET_KEY) throw new Error('JWT_SECRET_KEY is undefined');
-  const token = Jwt.sign({ _id, email }, JWT_SECRET_KEY, { expiresIn: '10d' });
+  const token = Jwt.sign({ _id, email }, JWT_SECRET_KEY, { expiresIn: '1d' });
   const result = {
     token,
     user: {

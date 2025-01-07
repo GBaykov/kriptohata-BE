@@ -80,7 +80,7 @@ export type CreateUserDto = {
   role: string;
   favourites_id?: mongoose.Types.ObjectId | string;
 };
-export type UpdateUserDto = Partial<CreateUserDto>;
+export type UpdateUserDto = Partial<CreateUserDto> & { new_password?: string };
 
 export type CallBack = { id: string; name: string; tel: string };
 export type CreateCallBackDto = { name: string; tel: string };
