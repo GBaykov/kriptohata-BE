@@ -5,15 +5,22 @@ import { RequestError } from '../static/utils';
 import { CreateUserDto, UpdateUserDto } from '../types';
 
 import { createFavorite, deleteFavorite } from './favorite_service';
-import { encryptPassword } from '../static/hash.helpers';
+import { checkHashPassword, encryptPassword } from '../static/hash.helpers';
 
 export const createUser = async (data: CreateUserDto) => {
-  const exist = await User.findOne({ email: data.email });
-  if (exist !== null)
+  const exist_email = await User.findOne({ email: data.email });
+  if (exist_email !== null)
     throw new RequestError(
-      'User with this email already exists',
+      'Пользователь с данным email уже существует',
       StatusCodes.BAD_REQUEST,
     );
+  const exist_tel = await User.findOne({ tel: data.tel });
+  if (exist_tel !== null)
+    throw new RequestError(
+      'Пользователь с данным номером телефона уже существует',
+      StatusCodes.BAD_REQUEST,
+    );
+
   const hash_password = await encryptPassword(data.password);
 
   const newUser = new User({ ...data, password: hash_password });
@@ -73,8 +80,24 @@ export const updateUser = async (
       StatusCodes.NOT_FOUND,
     );
   }
+  const { password, new_password, ...rest_user_dto } = update_user_dto;
+  if (password && new_password) {
+    const match = await checkHashPassword(password, user.password);
+    if (!match) {
+      throw new RequestError(
+        'Error: Incorrect password',
+        StatusCodes.UNAUTHORIZED,
+      );
+    }
+    const hash_password = await encryptPassword(new_password);
+    await User.updateOne(
+      { _id: id },
+      { password: hash_password, ...rest_user_dto },
+    );
+  } else {
+    await User.updateOne({ _id: id }, { ...update_user_dto });
+  }
 
-  await User.updateOne({ _id: id }, { ...update_user_dto });
   return await User.findById(id).select('-password');
 };
 
