@@ -6,6 +6,7 @@ import {
   deleteOrder,
   findAllOrders,
   findOrdersByUserId,
+  findOrdersByUserIdAndTel,
 } from '../services/order_service';
 
 class OrdersController {
@@ -32,6 +33,17 @@ class OrdersController {
     try {
       const { id } = req.params;
       const order = await findOrdersByUserId(id);
+      res.status(StatusCodes.OK).json(order);
+    } catch (err: unknown) {
+      handleErrors(err, req, res, next);
+    }
+  }
+
+  async getByUserIdAndTel(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { user_tel } = req.body;
+      const order = await findOrdersByUserIdAndTel(id, user_tel);
       res.status(StatusCodes.OK).json(order);
     } catch (err: unknown) {
       handleErrors(err, req, res, next);
