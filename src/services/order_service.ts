@@ -36,6 +36,28 @@ export const findOrdersByUserId = async (user_id: string) => {
   return orders;
 };
 
+export const findOrdersByUserIdAndTel = async (
+  user_id: string,
+  user_tel: string,
+) => {
+  if (!user_id)
+    throw new RequestError(
+      'Error: user_id is missing',
+      StatusCodes.BAD_REQUEST,
+    );
+
+  const orders_by_id = await Order.find({ user_id });
+  const orders_by_tel = user_tel ? await Order.find({ user_tel }) : [];
+  const orders = [...orders_by_id, ...orders_by_tel];
+  console.log(orders);
+  if (!orders)
+    throw new RequestError(
+      'Error: can not find order by id',
+      StatusCodes.NOT_FOUND,
+    );
+  return orders;
+};
+
 export const findAllOrders = async () => {
   return await Order.find();
 };
