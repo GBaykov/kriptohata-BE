@@ -8,12 +8,19 @@ import { createFavorite, deleteFavorite } from './favorite_service';
 import { checkHashPassword, encryptPassword } from '../static/hash.helpers';
 
 export const createUser = async (data: CreateUserDto) => {
-  const exist = await User.findOne({ email: data.email });
-  if (exist !== null)
+  const exist_email = await User.findOne({ email: data.email });
+  if (exist_email !== null)
     throw new RequestError(
-      'User with this email already exists',
+      'Пользователь с данным email уже существует',
       StatusCodes.BAD_REQUEST,
     );
+  const exist_tel = await User.findOne({ tel: data.tel });
+  if (exist_tel !== null)
+    throw new RequestError(
+      'Пользователь с данным номером телефона уже существует',
+      StatusCodes.BAD_REQUEST,
+    );
+
   const hash_password = await encryptPassword(data.password);
 
   const newUser = new User({ ...data, password: hash_password });
