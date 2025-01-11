@@ -38,7 +38,6 @@ export const createDevice = async (device: CreateDeviceDto) => {
         StatusCodes.BAD_REQUEST,
       );
     } else {
-      console.log(device, 43);
       const new_device = new Device(device);
       await Device.create(new_device);
       return new_device;

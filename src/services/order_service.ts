@@ -49,7 +49,6 @@ export const findOrdersByUserIdAndTel = async (
   const orders_by_id = await Order.find({ user_id });
   const orders_by_tel = user_tel ? await Order.find({ user_tel }) : [];
   const orders = [...orders_by_id, ...orders_by_tel];
-  console.log(orders);
   if (!orders)
     throw new RequestError(
       'Error: can not find order by id',

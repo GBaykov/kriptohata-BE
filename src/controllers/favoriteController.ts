@@ -42,7 +42,7 @@ class FavoritesController {
   async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const device_id = req.body;
+      const { device_id } = req.body;
       const favorite = await updateFavoriteById(id, device_id);
       res.status(StatusCodes.OK).json(favorite);
     } catch (err: unknown) {

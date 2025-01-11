@@ -22,7 +22,7 @@ export const createFavorite = async (user_id: mongoose.Types.ObjectId) => {
 export const findFavoriteById = async (id: string) => {
   if (!id)
     throw new RequestError('Error: id is missing', StatusCodes.BAD_REQUEST);
-  const favorite = await Favorite.findById(id);
+  const favorite = await Favorite.findById(id).populate('items');
   if (!favorite)
     throw new RequestError(
       `Error: can not find favorite by id ${id}`,
@@ -64,24 +64,30 @@ export const updateFavoriteById = async (id: string, device_id: ObjectId) => {
       StatusCodes.NOT_FOUND,
     );
   }
-  const device = await Device.find({ _id: device_id });
+
+  const device = await Device.findOne({ _id: device_id });
   if (!device)
     throw new RequestError(
       'Error in updateFavorite: no device with such device_id',
       StatusCodes.UNPROCESSABLE_ENTITY,
     );
 
-  if (users_favorite?.items.findIndex((item) => item.id === device_id) !== -1) {
-    const item_index = users_favorite.items.findIndex(
-      (item) => item.id === device_id,
-    );
+  const item_index = users_favorite.items.findIndex(
+    (item) => String(item._id) === String(device_id),
+  );
+
+  if (item_index !== -1) {
     users_favorite.items.splice(item_index, 1);
   } else {
-    users_favorite?.items.push(device);
+    if (device._id) {
+      users_favorite?.items.push(device._id);
+    }
   }
-  await Favorite.updateOne({ _id: id }, { ...users_favorite });
 
-  return await Favorite.findById(id);
+  await Favorite.updateOne({ _id: id }, users_favorite);
+
+  const favorites = await Favorite.findOne({ _id: id }).populate('items');
+  return favorites;
 };
 
 export const deleteFavorite = async (id: mongoose.Types.ObjectId | string) => {

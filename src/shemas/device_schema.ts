@@ -6,6 +6,7 @@ export const CurrencySchema = new mongoose.Schema({
 });
 
 export const DeviceSchema = new mongoose.Schema({
+  _id: Schema.Types.ObjectId,
   name: {
     type: String,
     required: true,
