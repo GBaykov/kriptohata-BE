@@ -6,7 +6,13 @@ export const FavoriteSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  items: [DeviceSchema],
+  // items: [DeviceSchema],
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Device',
+    },
+  ],
 });
 
 export const Favorite = mongoose.model('Favorite', FavoriteSchema);
